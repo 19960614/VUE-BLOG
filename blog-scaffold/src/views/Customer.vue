@@ -1,0 +1,183 @@
+<template>
+  <div id="Customer-all">
+    <div id="Customer-center">
+      <el-container class="Customer-box">
+        <el-header>
+          <div class="Customer-title">VUE-BLOG</div>
+          <div class="Customer-nav">
+            <div class="line"></div>
+            <el-menu
+              :default-active="activeIndex2"
+              class="el-menu-demo"
+              mode="horizontal"
+              @select="handleSelect"
+              background-color="#333"
+              text-color="#eee"
+              active-text-color="#eee"
+            >
+              <el-menu-item index="1" class="el-icon-s-home">
+                博客首页</el-menu-item
+              >
+              <el-menu-item index="2" class="el-icon-document">
+                我的文章</el-menu-item
+              >
+              <el-menu-item index="3" class="el-icon-camera">
+                我的相册</el-menu-item
+              >
+              <el-menu-item index="4" class="el-icon-close">
+                退出登录</el-menu-item
+              >
+            </el-menu>
+          </div>
+        </el-header>
+        <el-container>
+          <el-aside width="250px">
+            <el-col class="Customer-avatar">
+              <div class="demo-basic--circle">
+                <div class="block">
+                  <el-avatar :size="100" src="/images/avatar.jpg"></el-avatar>
+                  <div class="Customer-username">小天天</div>
+                </div>
+              </div>
+            </el-col>
+
+            <el-col>
+              <el-menu
+                class="el-menu-vertical-demo Customer-card"
+                background-color="#334"
+                text-color="#eee"
+              >
+                <el-menu-item>
+                  <span slot="title" class="Customer-card-article">
+                    文章：0
+                  </span>
+                </el-menu-item>
+                <el-menu-item>
+                  <span slot="title" class="Customer-card-photo">
+                    照片：0
+                  </span>
+                </el-menu-item>
+              </el-menu>
+            </el-col>
+            <el-col>
+              <el-menu
+                class="el-menu-vertical-demo Customer-contact"
+                background-color="#334"
+                text-color="#eee"
+              >
+                <el-menu-item>
+                  <i class="el-icon-phone-outline"></i>
+                  <span slot="title" class="Customer-contact-tel">
+                    15912341234
+                  </span>
+                </el-menu-item>
+                <el-menu-item>
+                  <i class="el-icon-chat-round"></i>
+                  <span slot="title" class="Customer-contact-qq">
+                    1441234567
+                  </span>
+                </el-menu-item>
+                <el-menu-item>
+                  <i class="el-icon-message"></i>
+                  <span slot="title" class="Customer-contact-mail">
+                    1441234567@qq.com
+                  </span>
+                </el-menu-item>
+              </el-menu>
+            </el-col>
+          </el-aside>
+          <el-main>Main</el-main>
+        </el-container>
+      </el-container>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      activeIndex: "1",
+      activeIndex2: "1",
+    };
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    },
+  },
+};
+</script>
+
+<style>
+#Customer-all {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: url(/images/bg.jpg);
+  background-size: 100% 100%;
+}
+.Customer-box {
+  height: 100vh;
+}
+#Customer-center {
+  margin: 0 auto;
+  width: 1100px;
+}
+#Customer-all .el-header {
+  background-color: #333;
+  opacity: 0.8;
+  text-align: center;
+  line-height: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+.Customer-title {
+  font-size: 22px;
+  color: #eee;
+}
+#Customer-all .el-menu-item {
+  min-width: 207px;
+}
+#Customer-all .el-menu-demo {
+  background-color: #333;
+  opacity: 0.8;
+}
+#Customer-all .el-aside {
+  background-color: #334;
+  opacity: 0.6;
+  color: #eee;
+  text-align: center;
+}
+.Customer-avatar {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #eee;
+}
+.Customer-card {
+  margin-top: 40px;
+  font-size: 18px;
+}
+.Customer-contact {
+  margin-top: 40px;
+  font-size: 16px;
+}
+#Customer-all .el-main {
+  background-color: #333;
+  opacity: 0.6;
+  color: #eee;
+  text-align: center;
+}
+#Customer-all .el-container {
+  flex-grow: 1;
+}
+#Customer-all .el-container:nth-child(5) .el-aside,
+#Customer-all .el-container:nth-child(6) .el-aside {
+  line-height: 260px;
+}
+#Customer-all .el-container:nth-child(7) .el-aside {
+  line-height: 320px;
+}
+</style>
