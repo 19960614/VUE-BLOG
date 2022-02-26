@@ -18,27 +18,31 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/login',
-    component: Login
+    component: Login,
+    meta: { auth: false }
   },
   {
     path: '/register',
-    component: Register
+    component: Register,
+    meta: { auth: false },
   },
   {
     path: '/managerial',
     component: Managerial,
+    meta: { auth: true },
     children: [
-      { path: '/home', component: Home }, //首页
-      { path: '/publish', component: Publish }, //文章发表
-      { path: '/edit', component: Edit }, //文章编辑
+      { path: '/home', component: Home, meta: { auth: true } }, //首页
+      { path: '/publish', component: Publish, meta: { auth: true } }, //文章发表
+      { path: '/edit', component: Edit, meta: { auth: true } }, //文章编辑
       { path: '/imageRanger', component: ImageRanger }, //照片管理
-      { path: '/setting', component: Setting }, //个人设置
-      { path: '', component: Home }, //个人设置
+      { path: '/setting', component: Setting, meta: { auth: true } }, //个人设置
+      { path: '', component: Home, meta: { auth: true } }, //个人设置
     ]
   },
   {
     path: '/customer',
-    component: Customer
+    component: Customer,
+    meta: { auth: true }
   },
   {
     path: '/',
@@ -57,20 +61,18 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // ...
-
   if (to.meta.auth) {  //需要权限的
     info().then((res) => {
-      if (res.data.code === 0) {  //token是正确的
+      if (res.data.errcode === 0) {  //token是正确的,往下走
         store.commit('setusername', res.data.username);
         next();
       }
-      else {
+      else { //不正确进入login
         next('/login');
       }
     })
   }
-  else {  //登录
+  else {  //登录注册不需要token
     next();
   }
 })

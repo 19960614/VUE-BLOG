@@ -1,52 +1,54 @@
 let UsersModel = require('../model/users.js');
 var jwt = require('jsonwebtoken');
+
 let login = (req, res, next) => {
-    UsersModel.find({ username: req.body.username, password: req.body.password }).then((data) => {
-        if (data.length) {
-            // req.session.username = req.body.username;
-            jwt.sign({ username : req.body.username }, 'abcdef', function(err, token) {
-                res.send({"errcode": 0, token});   //正确
-              });
-            // res.send({ 'errcode': 0, 'session': req.session.username });
-        }
-        else {
-            res.send({ 'errcode': -1 });
-        }
-    }) 
+  UsersModel.find({ username: req.body.username, password: req.body.password }).then((data) => {
+    if (data.length) {
+      jwt.sign({ username: req.body.username }, 'woshinibaba', function (err, token) {
+        res.send({ "errcode": 0, token }); //token正确返回0
+      });
+    }
+    else {
+      res.send({ 'errcode': -1 }); //登录失败返回-1
+    }
+  })
 };
+
 let register = (req, res, next) => {
-    UsersModel.insertMany([req.body]).then(() => {
-        res.send({ 'errcode': 0 });
-    }).catch(() => {
-        res.send({ 'errcode': -1 });
-    })
+  UsersModel.insertMany([req.body]).then(() => {
+    res.send({ 'errcode': 0 }); //注册成功返回0
+  }).catch(() => {
+    res.send({ 'errcode': -1 }); //注册失败返回-1
+  })
 };
+
 let logout = (req, res, next) => {
-    req.session.username = '';
-    res.redirect('/admin/login');
+  req.session.username = '';
+  res.redirect('/admin/login');
 };
+
 let info = (req, res, next) => {
-    console.log(123)
-    let token = req.headers.token;
-    jwt.verify(token, 'abcdef', function(err, decoded) {
-      if(err){
-        res.json({
-          code : -1,
-          errmsg : 'token错误'
-        });
-      }
-      else{
-        res.json({
-          code : 0,
-          errmsg : 'token正确',
-          username : decoded.username
-        });
-      }
-    });
-  };
+  let token = req.headers.token; 
+  jwt.verify(token, 'woshinibaba', function (err, decoded) { //验证token是否是正确的
+    if (err) {
+      res.json({ //错误返回-1
+        errcode: -1,
+        errmsg: 'token错误'
+      });
+    }
+    else {
+      res.json({ //正确返回0
+        errcode: 0,
+        errmsg: 'token正确',
+        username: decoded.username
+      });
+    }
+  });
+};
+
 module.exports = {
-    login,
-    register,
-    logout,
-    info
+  login,
+  register,
+  logout,
+  info
 };

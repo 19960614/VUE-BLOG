@@ -18,7 +18,7 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(error);
 });
 
-  Vue.config.productionTip = false;
+Vue.config.productionTip = false;
 
 new Vue({
   router,

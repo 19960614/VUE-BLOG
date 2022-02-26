@@ -3,20 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var session = require('express-session');
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
 
 var app = express();
-
-app.use(session({
-  secret: 'woshinibaba',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 * 15 }
-}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

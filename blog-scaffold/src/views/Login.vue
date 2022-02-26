@@ -87,7 +87,7 @@ export default {
           }).then((res) => {
             if (res.data.errcode === 0) {
               //返回0登陆成功
-              localStorage.setItem("session", res.data.session);
+              localStorage.setItem("token", res.data.token);
               this.$message({
                 message: "登录成功!",
                 type: "success",
