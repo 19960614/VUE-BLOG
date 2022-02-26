@@ -34,7 +34,10 @@
           >
         </el-form-item>
         <el-form-item class="Login-register">
-          <el-button class="Login-register-button" type="primary"
+          <el-button
+            class="Login-register-button"
+            @click="toRegister"
+            type="primary"
             >去注册</el-button
           >
         </el-form-item>
@@ -44,6 +47,8 @@
 </template>
 
 <script>
+import { login } from "@/api/user.js";
+
 export default {
   name: "Login",
   data() {
@@ -72,14 +77,45 @@ export default {
   },
   methods: {
     submitForm(formName) {
+      //点击登录触发事件
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          login({
+            //发起ajax
+            username: this.ruleForm.username,
+            password: this.ruleForm.pass,
+          }).then((res) => {
+            if (res.data.errcode === 0) {
+              //返回0登陆成功
+              localStorage.setItem("session", res.data.session);
+              this.$message({
+                message: "登录成功!",
+                type: "success",
+              });
+              if (this.ruleForm.username === "admin123") {
+                //只有admin123账户可以进入管理系统
+                this.$router.push("/Managerial/");
+              } else {
+                this.$router.push("/Customer/");
+              }
+            } else {
+              this.$message({
+                //返回-1登陆失败
+                message: "登录失败,请重新登录!",
+                type: "error",
+              });
+            }
+            //清空输入框
+            this.ruleForm.username = "";
+            this.ruleForm.pass = "";
+          });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
+    },
+    toRegister() {
+      this.$router.push("/register/"); //点击去往注册页面
     },
   },
 };

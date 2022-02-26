@@ -42,7 +42,10 @@
           >
         </el-form-item>
         <el-form-item class="Register-submit">
-          <el-button type="primary" class="Register-submit-button"
+          <el-button
+            type="primary"
+            @click="toLogin"
+            class="Register-submit-button"
             >去登录</el-button
           >
         </el-form-item>
@@ -52,22 +55,24 @@
 </template>
 
 <script>
+import { register } from "@/api/user.js";
+
 export default {
   name: "Register",
   data() {
-    var validateUsername = (rule, value, callback) => {
+    var validateUsername = (rule, value, callback) => { //验证用户名
       if (value === "") {
         callback(new Error("请输入用户名"));
       }
       callback();
     };
-    var validatePass = (rule, value, callback) => {
+    var validatePass = (rule, value, callback) => { //验证密码
       if (value === "") {
         callback(new Error("请输入密码"));
       }
       callback();
     };
-    var validatePass2 = (rule, value, callback) => {
+    var validatePass2 = (rule, value, callback) => { //确认密码
       if (value === "") {
         callback(new Error("请再次输入密码"));
       } else if (value !== this.ruleForm.pass) {
@@ -86,18 +91,41 @@ export default {
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
       },
+      title: "",
+      type: "",
     };
   },
   methods: {
-    submitForm(formName) {
+    submitForm(formName) { //点击注册触发事件
       this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert("submit!");
+        if (valid) { 
+          register({ //发起ajax
+            username: this.ruleForm.username,
+            password: this.ruleForm.pass,
+          }).then((res) => { 
+            if (res.data.errcode === 0) { //返回0，注册成功
+              this.$message({
+                message: "恭喜您注册成功!",
+                type: "success",
+              });
+            } else { //注册失败
+              this.$message({
+                message: "注册失败,请重新注册!",
+                type: "error",
+              });
+            }
+          });
         } else {
-          console.log("error submit!!");
           return false;
         }
+        //清空输入框
+        this.ruleForm.username = "";
+        this.ruleForm.pass = "";
+        this.ruleForm.checkPass = "";
       });
+    },
+    toLogin() {
+      this.$router.push("/login/"); //点击去往登录页面
     },
   },
 };

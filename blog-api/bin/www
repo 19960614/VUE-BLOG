@@ -25,7 +25,7 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-mongoose.connect('mongodb://localhost:27017/lagou', (err) => {
+mongoose.connect('mongodb://localhost:27017/vueBlog', (err) => {
   if (err) {
     console.log('数据库启动失败');
   }
