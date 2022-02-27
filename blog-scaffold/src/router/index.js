@@ -5,12 +5,13 @@ import store from '@/store/index.js';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Managerial from '@/views/Managerial.vue';
-import Home from '@/views/Home.vue';
+import ManagerialHome from '@/views/ManagerialHome.vue';
 import Publish from '@/views/Publish.vue';
 import Edit from '@/views/Edit.vue';
 import ImageRanger from '@/views/ImageRanger.vue';
 import Setting from '@/views/Setting.vue';
 import Customer from '@/views/Customer.vue';
+import CustomerHome from '@/views/CustomerHome.vue';
 import BlogArticle from '@/views/BlogArticle.vue';
 import BlogArticleContent from '@/views/BlogArticleContent.vue';
 import NotFound from '@/views/NotFound.vue';
@@ -33,12 +34,12 @@ const routes = [
     component: Managerial,
     meta: { auth: true },
     children: [
-      { path: '/home', component: Home, meta: { auth: true } }, //首页
+      { path: '/managerialHome', component: ManagerialHome, meta: { auth: true } }, //首页
       { path: '/publish', component: Publish, meta: { auth: true } }, //文章发表
       { path: '/edit', component: Edit, meta: { auth: true } }, //文章编辑
-      { path: '/imageRanger', component: ImageRanger }, //照片管理
+      { path: '/imageRanger', component: ImageRanger, meta: { auth: true } }, //照片管理
       { path: '/setting', component: Setting, meta: { auth: true } }, //个人设置
-      { path: '', component: Home, meta: { auth: true } }, //默认进入Home
+      { path: '', component: ManagerialHome, meta: { auth: true } }, //默认进入首页
     ]
   },
   {
@@ -46,9 +47,10 @@ const routes = [
     component: Customer,
     meta: { auth: true },
     children: [
+      { path: '/customerHome', component: CustomerHome, meta: { auth: true } }, //首页
       { path: '/blogArticle', component: BlogArticle, meta: { auth: true } }, //文章展示
-      { path: '/blogArticleContent', component: BlogArticleContent, meta: { auth: true } } //文章内容
-      // { path: '', component: BlogHome, meta: { auth: true } }, ////默认进入BlogHome
+      { path: '/blogArticleContent', component: BlogArticleContent, meta: { auth: true } }, //文章内容
+      { path: '', component: CustomerHome, meta: { auth: true } } //默认进入首页
     ]
   },
   {
@@ -71,8 +73,18 @@ router.beforeEach((to, from, next) => {
   if (to.meta.auth) {  //需要权限的
     info().then((res) => {
       if (res.data.errcode === 0) {  //token是正确的,往下走
-        store.commit('setusername', res.data.username);
-        next();
+        store.commit('setusername', res.data.username); //将username存入vuex
+        if (to.matched[0].path === '/managerial') { //如果进入管理平台要验证是否是管理员账号
+          if (res.data.username === 'admin123') {
+            next();
+          }
+          else {
+            next('/login'); //非管理员返回登录界面
+          }
+        }
+        else {
+          next();
+        }
       }
       else { //不正确进入login
         next('/login');

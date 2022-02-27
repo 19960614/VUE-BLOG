@@ -146,7 +146,7 @@ export default {
   height: 300px;
   margin: 100px auto;
 }
-.Register-label .el-form-item__label {
+.Register-label .el-form-item__label { /* 改变label前面文字的样式(style不能加scoped) */
   color: #eee;
 }
 .Register-username,

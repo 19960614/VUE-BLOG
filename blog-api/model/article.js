@@ -1,14 +1,14 @@
 let mongoose = require('mongoose');
 let articleSchema = mongoose.Schema({
-    articleTitle: { type: String, required: true },
-    articleType: { type: String, required: true },
-    articleImage: { type: String, required: true },
-    articleContent: { type: String, required: true },
-    articleYear: { type: Number, required: true },
-    articleMonth: { type: Number, required: true },
-    articleDay: { type: Number, required: true },
-    articleHour: { type: Number, required: true },
-    articleMinute: { type: Number, required: true },
+    articleTitle: { type: String },
+    articleImage: { type: String },
+    articleContent: { type: String },
+    articleYear: { type: String },
+    articleMonth: { type: String },
+    articleDay: { type: String },
+    articleHour: { type: String },
+    articleMinute: { type: String },
+    articleComment: { type: Array },
 })
 let articleModel = mongoose.model('article', articleSchema);
 module.exports = articleModel;

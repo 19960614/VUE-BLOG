@@ -28,7 +28,7 @@
               <el-menu-item index="3" class="el-icon-camera">
                 我的相册</el-menu-item
               >
-              <el-menu-item index="4" class="el-icon-close">
+              <el-menu-item index="4" class="el-icon-close" @click="toLogout">
                 退出登录</el-menu-item
               >
             </el-menu>
@@ -48,17 +48,17 @@
             <el-col>
               <el-menu
                 class="el-menu-vertical-demo Customer-card"
-                background-color="#334"
+                background-color="#333"
                 text-color="#eee"
               >
                 <el-menu-item>
                   <span slot="title" class="Customer-card-article">
-                    文章：0
+                    文章：{{ this.articleCount }}
                   </span>
                 </el-menu-item>
                 <el-menu-item>
                   <span slot="title" class="Customer-card-photo">
-                    照片：0
+                    照片：{{ this.photoCount }}
                   </span>
                 </el-menu-item>
               </el-menu>
@@ -66,7 +66,7 @@
             <el-col>
               <el-menu
                 class="el-menu-vertical-demo Customer-contact"
-                background-color="#334"
+                background-color="#333"
                 text-color="#eee"
               >
                 <el-menu-item>
@@ -98,11 +98,15 @@
 </template>
 
 <script>
+import { findArticleCount } from "@/api/article.js";
+
 export default {
   data() {
     return {
       activeIndex: "1",
       activeIndex2: "1",
+      articleCount: 0,
+      photoCount: 0,
     };
   },
   methods: {
@@ -112,6 +116,24 @@ export default {
     toBlogArticle() {
       this.$router.push("/blogArticle/"); //点击去往BlogArticle页面
     },
+    toLogout() {
+      localStorage.removeItem("token");
+      this.$router.push("/login");
+    },
+  },
+  mounted() {
+    //DOM渲染后发起ajax
+    findArticleCount() //查询文章数量，赋值给articleCount
+      .then((res) => {
+        if (res.data.errcode === 0) {
+          this.articleCount = res.data.count;
+        } else {
+          this.articleCount = "error";
+        }
+      })
+      .catch(() => {
+        this.articleCount = "error";
+      });
   },
 };
 </script>
@@ -136,7 +158,7 @@ export default {
 #Customer-all .el-header {
   height: 10vh;
   background-color: #333;
-  opacity: 0.8;
+  opacity: 0.9;
   text-align: center;
   line-height: 60px;
   display: flex;
@@ -154,8 +176,8 @@ export default {
   opacity: 0.8;
 }
 #Customer-all .el-aside {
-  background-color: #334;
-  opacity: 0.6;
+  background-color: #333;
+  opacity: 0.7;
   color: #eee;
   text-align: center;
 }
@@ -174,13 +196,12 @@ export default {
 }
 #Customer-all .el-main {
   background-color: #333;
-  opacity: 0.6;
+  opacity: 0.8;
   color: #eee;
-  /* text-align: center; */
 }
 .Customer-main {
   height: 90vh;
-  overflow: auto;
+  overflow: auto; /* main区域溢出加滚动条 */
 }
 #Customer-all .el-container {
   flex-grow: 1;

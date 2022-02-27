@@ -1,6 +1,6 @@
 <template>
-  <div id="Home-all">
-    <h1 class="Home-title">{{ title }}</h1>
+  <div id="CustomerHome-all">
+    <h1 class="CustomerHome-title">{{ title }}</h1>
     <el-empty
       image="/images/homeTitle.jpg"
       :image-size="200"
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "Home",
+  name: "CustomerHome",
   data() {
     return {
       title:
@@ -22,11 +22,11 @@ export default {
 </script>
 
 <style>
-#Home-all {
+#CustomerHome-all {
   font-size: 20px;
   color: #eee;
 }
-.Home-title {
+.CustomerHome-title {
   text-align: center;
 }
 </style>

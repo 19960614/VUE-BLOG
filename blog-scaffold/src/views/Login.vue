@@ -136,7 +136,7 @@ export default {
   height: 300px;
   margin: 100px auto;
 }
-.Login-label .el-form-item__label {
+.Login-label .el-form-item__label { /* 改变label前面文字的样式(style不能加scoped) */
   color: #eee;
 }
 .Login-username,

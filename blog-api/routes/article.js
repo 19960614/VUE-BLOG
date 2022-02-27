@@ -1,10 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var { add, find, remove, update } = require('../controller/article.js');
+let multer = require('multer');
+let upload = multer({ dest: './public/uploads/' });
+var { add, find, findArticleCount, remove, update } = require('../controller/article.js');
+
 /* GET users listing. */
-router.post('/add', add);
+router.post('/add', upload.single('articleImage'), add);
 router.get('/find', find);
+router.get('/findArticleCount', findArticleCount);
 router.post('/remove', remove);
-router.post('/update', update);
+router.post('/update', upload.single('articleImage'), update);
 
 module.exports = router;

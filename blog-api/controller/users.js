@@ -22,13 +22,8 @@ let register = (req, res, next) => {
   })
 };
 
-let logout = (req, res, next) => {
-  req.session.username = '';
-  res.redirect('/admin/login');
-};
-
 let info = (req, res, next) => {
-  let token = req.headers.token; 
+  let token = req.headers.token;
   jwt.verify(token, 'woshinibaba', function (err, decoded) { //验证token是否是正确的
     if (err) {
       res.json({ //错误返回-1
@@ -49,6 +44,5 @@ let info = (req, res, next) => {
 module.exports = {
   login,
   register,
-  logout,
   info
 };

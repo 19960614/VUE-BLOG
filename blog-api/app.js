@@ -24,9 +24,9 @@ app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
 app.use('/article', articleRouter);
 
-app.get('*', (req, res, next) => {
-  res.redirect('/admin/login');
-});
+// app.get('*', (req, res, next) => {
+//   res.redirect('/admin/login');
+// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

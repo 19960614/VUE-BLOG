@@ -3,21 +3,19 @@
     <el-container class="Managerial-box">
       <el-header>
         <div>VUE-BLOG后台管理系统</div>
-        <div>欢迎：小天天</div>
+        <div>欢迎：{{ username }}</div>
       </el-header>
       <el-container>
         <el-aside width="200px">
           <el-menu
             :default-active="activeManagerial"
             class="el-menu-vertical-demo"
-            @open="handleOpen"
-            @close="handleClose"
             router
             background-color="#333"
             text-color="#fff"
             active-text-color="#ffd04b"
           >
-            <el-menu-item index="/home">
+            <el-menu-item index="/managerialHome">
               <i class="el-icon-s-home"></i>
               <span>系统首页</span>
             </el-menu-item>
@@ -50,7 +48,7 @@
               <i class="el-icon-user"></i>
               <span slot="title">个人设置</span>
             </el-menu-item>
-            <el-menu-item>
+            <el-menu-item @click="toLogout">
               <i class="el-icon-close"></i>
               <span slot="title">退出登录</span>
             </el-menu-item>
@@ -70,18 +68,21 @@ export default {
   name: "Managerial",
   data() {
     return {
-      activeManagerial: "/managerial/home",
+      activeManagerial: "/managerial/ManagerialHome",
     };
   },
   created() {
     this.activeManagerial = this.$route.fullPath;
   },
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+  computed: {
+    username() {
+      return this.$store.state.username;
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+  },
+  methods: {
+    toLogout() {
+      localStorage.removeItem("token");
+      this.$router.push("/login");
     },
   },
 };
