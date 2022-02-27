@@ -18,7 +18,11 @@
               <el-menu-item index="1" class="el-icon-s-home">
                 博客首页</el-menu-item
               >
-              <el-menu-item index="2" class="el-icon-document">
+              <el-menu-item
+                index="2"
+                class="el-icon-document"
+                @click="toBlogArticle"
+              >
                 我的文章</el-menu-item
               >
               <el-menu-item index="3" class="el-icon-camera">
@@ -86,7 +90,7 @@
               </el-menu>
             </el-col>
           </el-aside>
-          <el-main>Main</el-main>
+          <el-main class="Customer-main"><router-view></router-view></el-main>
         </el-container>
       </el-container>
     </div>
@@ -104,6 +108,9 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    toBlogArticle() {
+      this.$router.push("/blogArticle/"); //点击去往BlogArticle页面
     },
   },
 };
@@ -127,6 +134,7 @@ export default {
   width: 1100px;
 }
 #Customer-all .el-header {
+  height: 10vh;
   background-color: #333;
   opacity: 0.8;
   text-align: center;
@@ -168,7 +176,11 @@ export default {
   background-color: #333;
   opacity: 0.6;
   color: #eee;
-  text-align: center;
+  /* text-align: center; */
+}
+.Customer-main {
+  height: 90vh;
+  overflow: auto;
 }
 #Customer-all .el-container {
   flex-grow: 1;

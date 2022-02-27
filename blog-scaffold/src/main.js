@@ -5,8 +5,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 import router from './router';
 import store from './store';
 import axios from 'axios';
+import mavonEditor from 'mavon-editor';
+import 'mavon-editor/dist/css/index.css';
 
 Vue.use(ElementUI);
+Vue.use(mavonEditor);
 
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么

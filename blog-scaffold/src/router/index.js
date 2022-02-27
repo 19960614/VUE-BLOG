@@ -11,6 +11,8 @@ import Edit from '@/views/Edit.vue';
 import ImageRanger from '@/views/ImageRanger.vue';
 import Setting from '@/views/Setting.vue';
 import Customer from '@/views/Customer.vue';
+import BlogArticle from '@/views/BlogArticle.vue';
+import BlogArticleContent from '@/views/BlogArticleContent.vue';
 import NotFound from '@/views/NotFound.vue';
 
 Vue.use(VueRouter);
@@ -36,13 +38,18 @@ const routes = [
       { path: '/edit', component: Edit, meta: { auth: true } }, //文章编辑
       { path: '/imageRanger', component: ImageRanger }, //照片管理
       { path: '/setting', component: Setting, meta: { auth: true } }, //个人设置
-      { path: '', component: Home, meta: { auth: true } }, //个人设置
+      { path: '', component: Home, meta: { auth: true } }, //默认进入Home
     ]
   },
   {
     path: '/customer',
     component: Customer,
-    meta: { auth: true }
+    meta: { auth: true },
+    children: [
+      { path: '/blogArticle', component: BlogArticle, meta: { auth: true } }, //文章展示
+      { path: '/blogArticleContent', component: BlogArticleContent, meta: { auth: true } } //文章内容
+      // { path: '', component: BlogHome, meta: { auth: true } }, ////默认进入BlogHome
+    ]
   },
   {
     path: '/',

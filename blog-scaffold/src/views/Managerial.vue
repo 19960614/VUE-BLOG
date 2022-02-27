@@ -8,15 +8,16 @@
       <el-container>
         <el-aside width="200px">
           <el-menu
-            default-active="1"
+            :default-active="activeManagerial"
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
+            router
             background-color="#333"
             text-color="#fff"
             active-text-color="#ffd04b"
           >
-            <el-menu-item index="1">
+            <el-menu-item index="/home">
               <i class="el-icon-s-home"></i>
               <span>系统首页</span>
             </el-menu-item>
@@ -33,23 +34,23 @@
                 <el-menu-item index="1-4-1">选项1</el-menu-item>
               </el-submenu> -->
             <!-- </el-submenu> -->
-            <el-menu-item index="2">
+            <el-menu-item index="/publish">
               <i class="el-icon-document"></i>
               <span slot="title">发表文章</span>
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item index="/edit">
               <i class="el-icon-document-checked"></i>
               <span slot="title">编辑文章</span>
             </el-menu-item>
-            <el-menu-item index="4">
+            <el-menu-item index="/imageRanger">
               <i class="el-icon-camera"></i>
               <span slot="title">相册管理</span>
             </el-menu-item>
-            <el-menu-item index="5">
+            <el-menu-item index="/setting">
               <i class="el-icon-user"></i>
               <span slot="title">个人设置</span>
             </el-menu-item>
-            <el-menu-item index="6">
+            <el-menu-item>
               <i class="el-icon-close"></i>
               <span slot="title">退出登录</span>
             </el-menu-item>
@@ -67,6 +68,14 @@
 <script>
 export default {
   name: "Managerial",
+  data() {
+    return {
+      activeManagerial: "/managerial/home",
+    };
+  },
+  created() {
+    this.activeManagerial = this.$route.fullPath;
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -92,6 +101,7 @@ export default {
   height: 100vh;
 }
 #Managerial-all .el-header {
+  height: 10vh;
   background-color: #333;
   color: #eee;
   text-align: center;
@@ -102,13 +112,14 @@ export default {
 #Managerial-all .el-aside {
   background-color: #333;
   color: #eee;
-  opacity: .6;
+  opacity: 0.6;
   text-align: center;
 }
 #Managerial-all .el-main {
   background: rgba(0, 0, 0, 0.5);
   color: #eee;
-  text-align: center;
+  height: 90vh;
+  overflow: auto;
 }
 #Managerial-all .el-container {
   flex-grow: 1;
