@@ -22,7 +22,7 @@
                 <el-button
                   type="text"
                   class="button"
-                  @click="toBlogArticleContent"
+                  @click="toBlogArticleContent(index)"
                   >浏览</el-button
                 >
               </div>
@@ -45,8 +45,8 @@ export default {
     };
   },
   methods: {
-    toBlogArticleContent() {
-      this.$router.push("/blogArticleContent/"); //点击去往BlogArticleContent页面
+    toBlogArticleContent(index) {
+      this.$router.push(`/blogArticleContent/${index}`); //点击去往BlogArticleContent页面
     },
   },
   mounted() {
@@ -55,7 +55,7 @@ export default {
         this.list = res.data.list;
       } else {
         this.$message({
-          message: "文章加载失败",
+          message: "文章列表加载失败",
           type: "error",
         });
       }

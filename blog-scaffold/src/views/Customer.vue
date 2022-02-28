@@ -10,12 +10,16 @@
               :default-active="activeIndex2"
               class="el-menu-demo"
               mode="horizontal"
-              @select="handleSelect"
+             
               background-color="#333"
               text-color="#eee"
               active-text-color="#eee"
             >
-              <el-menu-item index="1" class="el-icon-s-home">
+              <el-menu-item
+                index="1"
+                class="el-icon-s-home"
+                @click="toCustomerHome"
+              >
                 博客首页</el-menu-item
               >
               <el-menu-item
@@ -113,6 +117,9 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
+    toCustomerHome() {
+      this.$router.push("/customerHome/"); //点击去往CustomerHome页面
+    },
     toBlogArticle() {
       this.$router.push("/blogArticle/"); //点击去往BlogArticle页面
     },
@@ -157,8 +164,7 @@ export default {
 }
 #Customer-all .el-header {
   height: 10vh;
-  background-color: #333;
-  opacity: 0.9;
+  background-color: rgba(51, 51, 51, 0.9);
   text-align: center;
   line-height: 60px;
   display: flex;
@@ -195,8 +201,7 @@ export default {
   font-size: 16px;
 }
 #Customer-all .el-main {
-  background-color: #333;
-  opacity: 0.8;
+  background-color: rgba(51, 51, 51, 0.8);
   color: #eee;
 }
 .Customer-main {

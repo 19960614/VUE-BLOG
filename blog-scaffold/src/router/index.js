@@ -49,7 +49,7 @@ const routes = [
     children: [
       { path: '/customerHome', component: CustomerHome, meta: { auth: true } }, //首页
       { path: '/blogArticle', component: BlogArticle, meta: { auth: true } }, //文章展示
-      { path: '/blogArticleContent', component: BlogArticleContent, meta: { auth: true } }, //文章内容
+      { path: '/blogArticleContent/:id', component: BlogArticleContent, meta: { auth: true } }, //文章内容
       { path: '', component: CustomerHome, meta: { auth: true } } //默认进入首页
     ]
   },

@@ -4,12 +4,14 @@ let ArticleModel = require('../model/article.js');
 
 let add = (req, res, next) => {
     let body = req.body;
+    console.log(body,111);
     let articleImage = req.file;
     fs.renameSync(path.join('./public/uploads', articleImage.filename), path.join('./public/uploads', articleImage.filename + '.jpg'));
     let data = {
         ...body,
         articleImage: 'http://localhost:3000/uploads/' + articleImage.filename + '.jpg'
     };
+    console.log(data)
     ArticleModel.insertMany(data).then((info) => {
         if (info) {
             res.send({ "errcode": 0 });
@@ -23,7 +25,7 @@ let add = (req, res, next) => {
 };
 
 let find = (req, res, next) => {
-    ArticleModel.find().then((data) => {
+    ArticleModel.find(req.query).then((data) => {
         res.send({ 'errcode': 0, 'list': data });
     }).catch(() => {
         res.send({ 'errcode': -1 });
@@ -48,9 +50,19 @@ let remove = (req, res, next) => {
 let update = (req, res, next) => {
     let _id = req.body._id;
     ArticleModel.updateOne({ _id }, { $set: req.body }).then(() => {
-        res.send({ 'errcode': 1 });
-    }).catch(() => {
         res.send({ 'errcode': 0 });
+    }).catch(() => {
+        res.send({ 'errcode': -1 });
+    })
+};
+
+let updateComment = (req, res, next) => {
+    let _id = req.body._id;
+    console.log(typeof req.body.articleComment)
+    ArticleModel.updateOne({ _id }, { $set: { articleComment: JSON.stringify(req.body.articleComment) } }).then(() => {
+        res.send({ 'errcode': 0 });
+    }).catch(() => {
+        res.send({ 'errcode': -1 });
     })
 };
 
@@ -59,5 +71,6 @@ module.exports = {
     find,
     findArticleCount,
     remove,
-    update
+    update,
+    updateComment
 };

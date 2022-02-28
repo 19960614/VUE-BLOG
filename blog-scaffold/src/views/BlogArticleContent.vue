@@ -1,11 +1,12 @@
 <template>
   <div id="Article">
     <div id="Artivle-content">
-      <h2>这是标题</h2>
-      <h3>发布于:2022/2/26/13:14</h3>
-      <div class="Artivle-content-words">
-        乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。乌克兰24频道报道称，战斗正在激烈进行中。
-      </div>
+      <h2>{{ articleTitle }}</h2>
+      <h3>
+        {{ "发布于:" + articleYear + "/" }}{{ articleMonth + "/"
+        }}{{ articleDay + "/" }}{{ articleHour + ":" }}{{ articleMinute }}
+      </h3>
+      <div class="Artivle-content-words" v-html="articleContent"></div>
     </div>
 
     <el-divider></el-divider>
@@ -18,64 +19,139 @@
         v-model="textarea"
       >
       </el-input>
-      <el-button plain class="Artivle-comment-submit">发送</el-button>
+      <el-button plain class="Artivle-comment-submit" @click="toComment"
+        >发送</el-button
+      >
 
       <div style="clear: both"></div>
 
       <ul class="Artivle-comment-content">
-        <li>
+        <li v-for="(item, index) in articleComment" :key="index">
           <div>
-            <h4 class="Artivle-comment-content-username">小天天 :</h4>
-            <p class="Artivle-comment-content-words">太棒啦</p>
-          </div>
-          <p class="Artivle-comment-content-time">2022/2/26/14:45</p>
-        </li>
-        <el-divider></el-divider>
-        <li>
-          <div>
-            <h4 class="Artivle-comment-content-username">小天天 :</h4>
-            <p class="Artivle-comment-content-words">太棒啦</p>
-          </div>
-          <p class="Artivle-comment-content-time">2022/2/26/14:45</p>
-        </li>
-        <el-divider></el-divider>
-        <li>
-          <div>
-            <h4 class="Artivle-comment-content-username">小天天 :</h4>
-            <p class="Artivle-comment-content-words">太棒啦</p>
-          </div>
-          <p class="Artivle-comment-content-time">2022/2/26/14:45</p>
-        </li>
-        <el-divider></el-divider>
-        <li>
-          <div>
-            <h4 class="Artivle-comment-content-username">小天天 :</h4>
-            <p class="Artivle-comment-content-words">太棒啦</p>
-          </div>
-          <p class="Artivle-comment-content-time">2022/2/26/14:45</p>
-        </li>
-        <el-divider></el-divider>
-        <li>
-          <div>
-            <h4 class="Artivle-comment-content-username">小天天 :</h4>
+            <h4
+              class="Artivle-comment-content-username"
+              :style="{
+                color:
+                  articleComment[index].username === 'admin123' && '#ffd04b',
+              }"
+            >
+              {{
+                articleComment[index].username === "admin123"
+                  ? "博主:"
+                  : articleComment[index].username + ":"
+              }}
+            </h4>
             <p class="Artivle-comment-content-words">
-              太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦太棒啦
+              {{ articleComment[index].commentContent }}
             </p>
           </div>
-          <p class="Artivle-comment-content-time">2022/2/26/14:45</p>
+          <p class="Artivle-comment-content-time">
+            {{ articleComment[index].commentYear + "/"
+            }}{{ articleComment[index].commentMonth + "/"
+            }}{{ articleComment[index].commentDay + "/"
+            }}{{ articleComment[index].commentHour + ":"
+            }}{{ articleComment[index].commentMinute }}
+          </p>
+          <el-divider></el-divider>
         </li>
-        <el-divider></el-divider>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+import { find, updateComment } from "@/api/article.js";
+
 export default {
   data() {
     return {
       textarea: "",
+      list: "",
     };
+  },
+  created() {
+    find()
+      .then((res) => {
+        if (res.data.errcode === 0) {
+          this.list = res.data.list[this.$route.params.id];
+          this.list.articleComment = JSON.parse(this.list.articleComment);
+        } else {
+          this.$message({
+            message: "文章加载失败",
+            type: "error",
+          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "文章加载失败",
+          type: "error",
+        });
+      });
+  },
+  computed: {
+    articleTitle() {
+      return this.list.articleTitle;
+    },
+    articleYear() {
+      return this.list.articleYear;
+    },
+    articleMonth() {
+      return this.list.articleMonth;
+    },
+    articleDay() {
+      return this.list.articleDay;
+    },
+    articleHour() {
+      return this.list.articleHour;
+    },
+    articleMinute() {
+      return this.list.articleMinute;
+    },
+    articleComment() {
+      return this.list.articleComment;
+    },
+    articleContent() {
+      return this.list.articleContent;
+    },
+    username() {
+      return this.$store.state.username;
+    },
+  },
+  methods: {
+    toComment() {
+      let date = new Date();
+      this.list.articleComment.push({
+        commentYear: date.getFullYear(),
+        commentMonth: date.getMonth() + 1,
+        commentDay: date.getDate(),
+        commentHour: date.getHours(),
+        commentMinute: date.getMinutes(),
+        username: this.username,
+        commentContent: this.textarea,
+      });
+      updateComment(this.list)
+        .then((res) => {
+          if (res.data.errcode === 0) {
+            this.$message({
+              message: "评论成功",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              message: "发表评论失败",
+              type: "error",
+            });
+          }
+        })
+        .catch(() => {
+          this.$message({
+            message: "发表评论失败",
+            type: "error",
+          });
+        });
+      this.textarea = "";
+    },
   },
 };
 </script>

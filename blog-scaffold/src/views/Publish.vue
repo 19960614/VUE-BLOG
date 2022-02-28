@@ -90,22 +90,29 @@ export default {
           this.ruleForm.articleDay = date.getDate();
           this.ruleForm.articleHour = date.getHours();
           this.ruleForm.articleMinute = date.getMinutes();
-          add(this.ruleForm).then((res) => {
-            //发起ajax
-            if (res.data.errcode === 0) {
-              //返回0，提交成功
-              this.$message({
-                message: "提交完成!",
-                type: "success",
-              });
-            } else {
-              //提交失败
+          add(this.ruleForm)
+            .then((res) => {
+              //发起ajax
+              if (res.data.errcode === 0) {
+                //返回0，提交成功
+                this.$message({
+                  message: "提交完成!",
+                  type: "success",
+                });
+              } else {
+                //提交失败
+                this.$message({
+                  message: "提交失败",
+                  type: "error",
+                });
+              }
+            })
+            .catch(() => {
               this.$message({
                 message: "提交失败",
                 type: "error",
               });
-            }
-          });
+            });
         } else {
           return false;
         }

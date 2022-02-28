@@ -8,7 +8,7 @@ let articleSchema = mongoose.Schema({
     articleDay: { type: String },
     articleHour: { type: String },
     articleMinute: { type: String },
-    articleComment: { type: Array },
+    articleComment: { type: String },
 })
 let articleModel = mongoose.model('article', articleSchema);
 module.exports = articleModel;

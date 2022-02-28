@@ -18,16 +18,21 @@ function add(data) {
   }); //添加文章接口 
 }
 
-function find() {
-  return axios.get('/api/article/find'); //查询接口 
+function find(data = {}) {
+  return axios.get('/api/article/find', { params: data }); //查询接口 
 }
 
 function findArticleCount() {
   return axios.get('/api/article/findArticleCount'); //查询个数接口 
 }
 
+function updateComment(data) {
+  return axios.patch('/api/article/updateComment', data); //添加评论接口 
+}
+
 export {
   add,
   find,
-  findArticleCount
+  findArticleCount,
+  updateComment
 }
