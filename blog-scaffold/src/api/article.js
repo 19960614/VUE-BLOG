@@ -43,10 +43,15 @@ function updateComment(data) {
   return axios.patch('/api/article/updateComment', data); //添加、更新评论接口 
 }
 
+function remove(data) {
+  return axios.post('/api/article/remove', data); //添加、更新评论接口 
+}
+
 export {
   add,
   find,
   findArticleCount,
   update,
-  updateComment
+  updateComment,
+  remove
 }

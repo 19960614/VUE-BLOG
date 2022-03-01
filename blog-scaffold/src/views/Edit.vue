@@ -1,5 +1,6 @@
 <template>
   <div id="Edit-all">
+    <!-- 表格 -->
     <el-table :data="tableData" style="width: 100%">
       <el-table-column label="日期" width="180">
         <template slot-scope="scope">
@@ -7,7 +8,7 @@
           <span style="margin-left: 10px">{{ scope.row.date }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="content" label="内容"> </el-table-column>
+      <el-table-column prop="content" label="标题"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
@@ -79,14 +80,14 @@
 </template>
 
 <script>
-import { find, update } from "@/api/article.js";
+import { find, update, remove } from "@/api/article.js";
 
 export default {
   data() {
     return {
       centerDialogVisible: false,
-      list: "",
-      tableData: [],
+      list: "", //ajax传回来的数据
+      tableData: [], //表格要渲染的数据
       ruleForm: {
         //提交的字段
         articleTitle: "",
@@ -94,8 +95,8 @@ export default {
         articleContent: "",
         _id: "",
       },
-      imageUrl: "",
-      content: "",
+      imageUrl: "", //图片url
+      content: "", //内容
       rules: {
         //标题验证
         articleTitle: [
@@ -106,9 +107,6 @@ export default {
             message: "长度为 1 到 16 个字符",
             trigger: "blur",
           },
-        ],
-        articleContent: [
-          { required: true, message: "请输入文章内容", trigger: "blur" },
         ],
       },
     };
@@ -121,6 +119,7 @@ export default {
           this.list = res.data.list;
           for (let i = 0; i < this.list.length; i++) {
             this.tableData.push({
+              //把数据放到tableData中渲染
               date: `${this.list[i].articleYear}-${this.list[i].articleMonth}-${this.list[i].articleDay}`,
               content: this.list[i].articleTitle,
             });
@@ -141,6 +140,7 @@ export default {
   },
   methods: {
     handleClose(done) {
+      //关闭弹层
       this.$confirm("确认关闭?")
         .then((_) => {
           done();
@@ -148,7 +148,7 @@ export default {
         .catch((_) => {});
     },
     handleEdit(index, row, done) {
-      //点击编辑按钮时触发
+      //点击编辑按钮时触发，做回显
       this.ruleForm.articleTitle = this.list[index].articleTitle;
       this.ruleForm._id = this.list[index]._id;
       this.imageUrl = this.list[index].articleImage;
@@ -156,22 +156,61 @@ export default {
     },
     handleDelete(index, row) {
       //删除按钮点击弹窗的按钮触发的事件
-      this.$confirm("此操作将永久删除该条信息, 是否继续?", "提示", {
+      this.$confirm("此操作将删除该条信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
         center: true,
       })
         .then(() => {
-          //点击确认触发
-          this.tableData.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
+          //点击确认触发删除的ajax
+          remove({ _id: this.list[index]._id }) //根据id删除
+            .then((res) => {
+              if (res.data.errcode === 0) {
+                find() //删除完毕进行全部文章检索
+                  .then((res) => {
+                    if (res.data.errcode === 0) {
+                      this.list = res.data.list;
+                      this.tableData.length = 0;
+                      for (let i = 0; i < this.list.length; i++) {
+                        this.tableData.push({
+                          date: `${this.list[i].articleYear}-${this.list[i].articleMonth}-${this.list[i].articleDay}`,
+                          content: this.list[i].articleTitle,
+                        });
+                      }
+                    } else {
+                      this.$message({
+                        message: "文章列表加载失败",
+                        type: "error",
+                      });
+                    }
+                  })
+                  .catch(() => {
+                    this.$message({
+                      message: "文章列表加载失败",
+                      type: "error",
+                    });
+                  });
+                this.$message({
+                  type: "success",
+                  message: "删除成功!",
+                });
+              } else {
+                this.$message({
+                  message: "删除失败",
+                  type: "error",
+                });
+              }
+            })
+            .catch(() => {
+              this.$message({
+                message: "删除失败",
+                type: "error",
+              });
+            });
         })
         .catch(() => {
-          //点击删除触发
+          //点击取消删除触发
           this.$message({
             type: "info",
             message: "已取消删除",
@@ -197,56 +236,65 @@ export default {
       //后端是通过 file来拿的
     },
     handle(value, render) {
-      console.log(value, render);
+      console.log(value, render); //markdown的内容
       this.ruleForm.articleContent = render;
     },
     toEdit() {
-      update(this.ruleForm)
-        .then((res) => {
-          //发起更新ajax
-          if (res.data.errcode === 0) {
-            this.$message({
-              message: "提交完成!",
-              type: "success",
-            });
-            find() //进行全部文章检索
-              .then((res) => {
-                if (res.data.errcode === 0) {
-                  this.list = res.data.list;
-                  this.tableData.length = 0;
-                  for (let i = 0; i < this.list.length; i++) {
-                    this.tableData.push({
-                      date: `${this.list[i].articleYear}-${this.list[i].articleMonth}-${this.list[i].articleDay}`,
-                      content: this.list[i].articleTitle,
+      //点击编辑触发
+      if (this.ruleForm.articleTitle === "") {
+        //标题不能为空
+        this.$message({
+          message: "请输入文章标题!",
+          type: "warning",
+        });
+      } else {
+        update(this.ruleForm)
+          .then((res) => {
+            //发起更新ajax
+            if (res.data.errcode === 0) {
+              this.$message({
+                message: "提交完成!",
+                type: "success",
+              });
+              find() //更新完毕进行全部文章检索
+                .then((res) => {
+                  if (res.data.errcode === 0) {
+                    this.list = res.data.list;
+                    this.tableData.length = 0;
+                    for (let i = 0; i < this.list.length; i++) {
+                      this.tableData.push({
+                        date: `${this.list[i].articleYear}-${this.list[i].articleMonth}-${this.list[i].articleDay}`,
+                        content: this.list[i].articleTitle,
+                      });
+                    }
+                  } else {
+                    this.$message({
+                      message: "文章列表加载失败",
+                      type: "error",
                     });
                   }
-                } else {
+                })
+                .catch(() => {
                   this.$message({
                     message: "文章列表加载失败",
                     type: "error",
                   });
-                }
-              })
-              .catch(() => {
-                this.$message({
-                  message: "文章列表加载失败",
-                  type: "error",
                 });
+              this.centerDialogVisible = false;
+            } else {
+              this.$message({
+                message: "提交失败",
+                type: "error",
               });
-            this.centerDialogVisible = false;
-          } else {
+            }
+          })
+          .catch(() => {
             this.$message({
               message: "提交失败",
               type: "error",
             });
-          }
-        })
-        .catch(() => {
-          this.$message({
-            message: "提交失败",
-            type: "error",
           });
-        });
+      }
     },
   },
 };

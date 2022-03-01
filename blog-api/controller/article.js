@@ -71,10 +71,10 @@ let findArticleCount = (req, res, next) => {
 };
 
 let remove = (req, res, next) => {
-    ArticleModel.deleteOne(req.body).then(() => {
-        res.send({ 'errcode': 1 });
-    }).catch(() => {
+    ArticleModel.deleteOne({ "_id": req.body._id }).then(() => {
         res.send({ 'errcode': 0 });
+    }).catch(() => {
+        res.send({ 'errcode': -1 });
     })
 };
 
