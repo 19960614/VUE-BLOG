@@ -10,7 +10,6 @@
               :default-active="activeIndex2"
               class="el-menu-demo"
               mode="horizontal"
-             
               background-color="#333"
               text-color="#eee"
               active-text-color="#eee"
@@ -118,14 +117,23 @@ export default {
       console.log(key, keyPath);
     },
     toCustomerHome() {
-      this.$router.push("/customerHome/"); //点击去往CustomerHome页面
+      this.$router
+        .push("/customerHome/")
+        .then(() => {})
+        .catch(() => {}); //点击去往CustomerHome页面
     },
     toBlogArticle() {
-      this.$router.push("/blogArticle/"); //点击去往BlogArticle页面
+      this.$router
+        .push("/blogArticle/")
+        .then(() => {})
+        .catch(() => {}); //点击去往BlogArticle页面
     },
     toLogout() {
       localStorage.removeItem("token");
-      this.$router.push("/login");
+      this.$router
+        .push("/login")
+        .then(() => {})
+        .catch(() => {}); //编程式路由加then、catch放置报错
     },
   },
   mounted() {
