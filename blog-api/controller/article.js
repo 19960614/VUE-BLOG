@@ -5,24 +5,36 @@ let ObjectId = require('mongodb').ObjectId;
 
 let add = (req, res, next) => {
     let body = req.body;
-    console.log(body, 111);
     let articleImage = req.file;
-    fs.renameSync(path.join('./public/uploads', articleImage.filename), path.join('./public/uploads', articleImage.filename + '.jpg'));
-    let data = {
-        ...body,
-        articleImage: 'http://localhost:3000/uploads/' + articleImage.filename + '.jpg'
-    };
-    console.log(data)
-    ArticleModel.insertMany(data).then((info) => {
-        if (info) {
-            res.send({ "errcode": 0 });
-        }
-        else {
+    if (req.file) {
+        fs.renameSync(path.join('./public/uploads', articleImage.filename), path.join('./public/uploads', articleImage.filename + '.jpg'));
+        let data = {
+            ...body,
+            articleImage: 'http://localhost:3000/uploads/' + articleImage.filename + '.jpg'
+        };
+        ArticleModel.insertMany(data).then((info) => {
+            if (info) {
+                res.send({ "errcode": 0 });
+            }
+            else {
+                res.send({ "errcode": -1 });
+            }
+        }).catch((err) => {
             res.send({ "errcode": -1 });
-        }
-    }).catch((err) => {
-        res.send({ "errcode": -1 });
-    });
+        });
+    }
+    else {
+        ArticleModel.insertMany(body).then((info) => {
+            if (info) {
+                res.send({ "errcode": 0 });
+            }
+            else {
+                res.send({ "errcode": -1 });
+            }
+        }).catch((err) => {
+            res.send({ "errcode": -1 });
+        });
+    }
 };
 
 let find = (req, res, next) => {
@@ -35,9 +47,7 @@ let find = (req, res, next) => {
     }
     else if (req.query._id) {
         let id = ObjectId(req.query._id);
-        console.log(1111111, id) //这里走了
         ArticleModel.find({ "_id": id }).then((data) => {
-            console.log(2222222, data) //这里走了，也找到对应数据了
             res.send({ 'errcode': 0, 'list': data });
         }).catch(() => {
             res.send({ 'errcode': -1 });
@@ -51,6 +61,7 @@ let find = (req, res, next) => {
         })
     }
 };
+
 let findArticleCount = (req, res, next) => {
     ArticleModel.find(req.query).count().then((data) => {
         res.send({ 'errcode': 0, count: data });
@@ -68,12 +79,28 @@ let remove = (req, res, next) => {
 };
 
 let update = (req, res, next) => {
+    let body = req.body;
     let _id = req.body._id;
-    ArticleModel.updateOne({ _id }, { $set: req.body }).then(() => {
-        res.send({ 'errcode': 0 });
-    }).catch(() => {
-        res.send({ 'errcode': -1 });
-    })
+    if (req.file) {
+        let articleImage = req.file;
+        fs.renameSync(path.join('./public/uploads', articleImage.filename), path.join('./public/uploads', articleImage.filename + '.jpg'));
+        let data = {
+            ...body,
+            articleImage: 'http://localhost:3000/uploads/' + articleImage.filename + '.jpg'
+        };
+        ArticleModel.updateOne({ _id }, { $set: { "articleTitle": data.articleTitle, "articleImage": data.articleImage, "articleContent": data.articleContent } }).then(() => {
+            res.send({ 'errcode': 0 });
+        }).catch(() => {
+            res.send({ 'errcode': -1 });
+        })
+    }
+    else {
+        ArticleModel.updateOne({ _id }, { $set: { "articleTitle": body.articleTitle, "articleContent": body.articleContent } }).then(() => {
+            res.send({ 'errcode': 0 });
+        }).catch(() => {
+            res.send({ 'errcode': -1 });
+        })
+    }
 };
 
 let updateComment = (req, res, next) => {

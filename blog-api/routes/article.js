@@ -9,7 +9,7 @@ router.post('/add', upload.single('articleImage'), add);
 router.get('/find', find);
 router.get('/findArticleCount', findArticleCount);
 router.post('/remove', remove);
-router.post('/update', upload.single('articleImage'), update);
+router.patch('/update', upload.single('articleImage'), update);
 router.patch('/updateComment', updateComment)
 
 module.exports = router;

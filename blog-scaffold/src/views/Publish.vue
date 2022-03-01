@@ -28,7 +28,7 @@
       </el-form-item>
 
       <!-- markdown编辑器 -->
-      <el-form-item>
+      <el-form-item label="文章内容" class="Publish-label">
         <div id="main">
           <mavon-editor v-model="content" @change="handle"></mavon-editor>
         </div>

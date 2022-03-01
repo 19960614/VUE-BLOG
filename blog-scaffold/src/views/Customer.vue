@@ -7,31 +7,24 @@
           <div class="Customer-nav">
             <div class="line"></div>
             <el-menu
-              :default-active="activeIndex2"
+              :default-active="activeIndex"
               class="el-menu-demo"
               mode="horizontal"
+              router
               background-color="#333"
               text-color="#eee"
               active-text-color="#eee"
             >
-              <el-menu-item
-                index="1"
-                class="el-icon-s-home"
-                @click="toCustomerHome"
-              >
+              <el-menu-item index="/customerHome" class="el-icon-s-home">
                 博客首页</el-menu-item
               >
-              <el-menu-item
-                index="2"
-                class="el-icon-document"
-                @click="toBlogArticle"
-              >
+              <el-menu-item index="/blogArticle" class="el-icon-document">
                 我的文章</el-menu-item
               >
               <el-menu-item index="3" class="el-icon-camera">
                 我的相册</el-menu-item
               >
-              <el-menu-item index="4" class="el-icon-close" @click="toLogout">
+              <el-menu-item class="el-icon-close" @click="toLogout">
                 退出登录</el-menu-item
               >
             </el-menu>
@@ -104,29 +97,24 @@
 import { findArticleCount } from "@/api/article.js";
 
 export default {
+  name: "Customer",
   data() {
     return {
-      activeIndex: "1",
-      activeIndex2: "1",
+      activeIndex: "/customerHome",
       articleCount: 0,
       photoCount: 0,
     };
   },
+  created() {
+    if (this.$route.fullPath.toLowerCase() === "/customer") {
+      this.activeIndex = "/customerHome";
+    } else {
+      this.activeIndex = this.$route.fullPath;
+    }
+  },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
-    },
-    toCustomerHome() {
-      this.$router
-        .push("/customerHome/")
-        .then(() => {})
-        .catch(() => {}); //点击去往CustomerHome页面
-    },
-    toBlogArticle() {
-      this.$router
-        .push("/blogArticle/")
-        .then(() => {})
-        .catch(() => {}); //点击去往BlogArticle页面
     },
     toLogout() {
       localStorage.removeItem("token");
