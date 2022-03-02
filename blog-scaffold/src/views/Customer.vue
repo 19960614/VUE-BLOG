@@ -21,7 +21,7 @@
               <el-menu-item index="/blogArticle" class="el-icon-document">
                 我的文章</el-menu-item
               >
-              <el-menu-item index="3" class="el-icon-camera">
+              <el-menu-item index="/MyPhotos" class="el-icon-camera">
                 我的相册</el-menu-item
               >
               <el-menu-item class="el-icon-close" @click="toLogout">
@@ -54,7 +54,7 @@
                 </el-menu-item>
                 <el-menu-item>
                   <span slot="title" class="Customer-card-photo">
-                    照片：{{ this.photoCount }}
+                    照片：{{ this.photosCount }}
                   </span>
                 </el-menu-item>
               </el-menu>
@@ -95,6 +95,7 @@
 
 <script>
 import { findArticleCount } from "@/api/article.js";
+import { findPhotosCount } from "@/api/photos.js";
 
 export default {
   name: "Customer",
@@ -102,7 +103,7 @@ export default {
     return {
       activeIndex: "/customerHome",
       articleCount: 0,
-      photoCount: 0,
+      photosCount: 0,
     };
   },
   created() {
@@ -136,6 +137,17 @@ export default {
       })
       .catch(() => {
         this.articleCount = "error";
+      });
+    findPhotosCount() //查询照片数量，赋值给photosCount
+      .then((res) => {
+        if (res.data.errcode === 0) {
+          this.photosCount = res.data.count;
+        } else {
+          this.photosCount = "error";
+        }
+      })
+      .catch(() => {
+        this.photosCount = "error";
       });
   },
 };

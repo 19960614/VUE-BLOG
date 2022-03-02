@@ -59,7 +59,8 @@ export default {
     };
   },
   created() {
-    if (this.$route.fullPath.toLowerCase() === "/managerial") {
+    console.log(this.$route.fullPath.toLowerCase())
+    if (this.$route.fullPath.toLowerCase() === "/managerial/") {
       this.activeIndex = "/managerialHome";
     } else {
       this.activeIndex = this.$route.fullPath;

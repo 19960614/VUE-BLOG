@@ -14,6 +14,7 @@ import Customer from '@/views/Customer.vue';
 import CustomerHome from '@/views/CustomerHome.vue';
 import BlogArticle from '@/views/BlogArticle.vue';
 import BlogArticleContent from '@/views/BlogArticleContent.vue';
+import MyPhotos from '@/views/MyPhotos.vue';
 import NotFound from '@/views/NotFound.vue';
 
 Vue.use(VueRouter);
@@ -50,6 +51,7 @@ const routes = [
       { path: '/customerHome', component: CustomerHome, meta: { auth: true } }, //首页
       { path: '/blogArticle', component: BlogArticle, meta: { auth: true } }, //文章展示
       { path: '/blogArticleContent/:id', component: BlogArticleContent, meta: { auth: true } }, //文章内容
+      { path: '/myPhotos', component: MyPhotos, meta: { auth: true } }, //照片
       { path: '', component: CustomerHome, meta: { auth: true } } //默认进入首页
     ]
   },

@@ -7,6 +7,7 @@ var logger = require('morgan');
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 var articleRouter = require('./routes/article');
+var photosRouter = require('./routes/photos');
 
 var app = express();
 
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
 app.use('/article', articleRouter);
+app.use('/photos', photosRouter);
 
 // app.get('*', (req, res, next) => {
 //   res.redirect('/admin/login');
