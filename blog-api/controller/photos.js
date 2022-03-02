@@ -2,7 +2,7 @@ let fs = require('fs');
 let path = require('path');
 let PhotosModel = require('../model/photos.js');
 
-let add = (req, res, next) => {
+let add = (req, res, next) => { //添加照片
     let photosImage = req.file;
     fs.renameSync(path.join('./public/uploads', photosImage.filename), path.join('./public/uploads', photosImage.filename + '.jpg'));
     let data = {
@@ -20,7 +20,7 @@ let add = (req, res, next) => {
     });
 };
 
-let find = (req, res, next) => {
+let find = (req, res, next) => { //查找所有照片
     PhotosModel.find().then((data) => {
         res.send({ 'errcode': 0, 'list': data });
     }).catch(() => {
@@ -28,7 +28,7 @@ let find = (req, res, next) => {
     })
 };
 
-let findPhotosCount = (req, res, next) => {
+let findPhotosCount = (req, res, next) => { //照片数量
     PhotosModel.find(req.query).count().then((data) => {
         res.send({ 'errcode': 0, count: data });
     }).catch(() => {
@@ -36,9 +36,9 @@ let findPhotosCount = (req, res, next) => {
     })
 };
 
-let remove = (req, res, next) => {
+let remove = (req, res, next) => { //删除
     PhotosModel.find({ "_id": req.body._id }).then((data) => {
-        let filePath = path.resolve(path.join('public', data[0].photosUrl.match(/\/uploads.+$/)[0]));
+        let filePath = path.resolve(path.join('public', data[0].photosUrl.match(/\/uploads.+$/)[0])); //删除uploads下的文件
         fs.unlink(filePath, function (err) {
             if (err) {
                 console.log('删除文件失败');

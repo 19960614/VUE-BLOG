@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-function find() {
-  return axios.get('/api/setting/find'); //查询接口 
+function find() { //查询接口
+  return axios.get('/api/setting/find');
 }
 
-function update(data) {
+function update(data) { //更新个人信息接口
   let param = new FormData();
   param.append('myName', data.myName);
   param.append('myHead', data.myHead);
@@ -15,7 +15,7 @@ function update(data) {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
-  }); //更新个人信息接口
+  });
 }
 
 export {

@@ -94,13 +94,11 @@ export default {
             .then((res) => {
               //发起ajax
               if (res.data.errcode === 0) {
-                //返回0，提交成功
                 this.$message({
                   message: "提交完成!",
                   type: "success",
                 });
               } else {
-                //提交失败
                 this.$message({
                   message: "提交失败",
                   type: "error",
@@ -119,6 +117,7 @@ export default {
       });
     },
     resetForm(formName) {
+      //重置
       this.$refs[formName].resetFields();
     },
     beforeAvatarUpload(file) {
@@ -136,7 +135,7 @@ export default {
       //后端是通过 file来拿的
     },
     handle(value, render) {
-      console.log(value, render);
+      console.log(value, render); //markdown里的内容
       this.ruleForm.articleContent = render;
     },
   },
@@ -156,7 +155,7 @@ export default {
   overflow: hidden;
 }
 #Publish-setting .avatar-uploader .el-upload:hover {
-  border-color: #409eff;
+  border-color: #f3cf2f;
 }
 #Publish-setting .avatar-uploader-icon {
   font-size: 28px;

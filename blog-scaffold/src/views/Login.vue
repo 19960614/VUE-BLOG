@@ -53,12 +53,14 @@ export default {
   name: "Login",
   data() {
     var validateUsername = (rule, value, callback) => {
+      //验证用户名是否为空
       if (value === "") {
         callback(new Error("请输入用户名"));
       }
       callback();
     };
     var validatePass = (rule, value, callback) => {
+      //验证密码是否为空
       if (value === "") {
         callback(new Error("请输入密码"));
       }
@@ -66,6 +68,7 @@ export default {
     };
     return {
       ruleForm: {
+        //提交的字段
         pass: "",
         username: "",
       },
@@ -86,8 +89,7 @@ export default {
             password: this.ruleForm.pass,
           }).then((res) => {
             if (res.data.errcode === 0) {
-              //返回0登陆成功
-              localStorage.setItem("token", res.data.token);
+              localStorage.setItem("token", res.data.token); //将token存入本地存储
               this.$message({
                 message: "登录成功!",
                 type: "success",
@@ -100,7 +102,6 @@ export default {
               }
             } else {
               this.$message({
-                //返回-1登陆失败
                 message: "登录失败,请重新登录!",
                 type: "error",
               });
@@ -136,7 +137,8 @@ export default {
   height: 300px;
   margin: 100px auto;
 }
-.Login-label .el-form-item__label { /* 改变label前面文字的样式(style不能加scoped) */
+.Login-label .el-form-item__label {
+  /* 改变label前面文字的样式(style不能加scoped) */
   color: #eee;
 }
 .Login-username,

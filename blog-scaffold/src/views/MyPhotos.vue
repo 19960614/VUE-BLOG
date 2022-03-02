@@ -19,7 +19,7 @@ export default {
     };
   },
   mounted() {
-    find()
+    find() //查找所有照片存入list
       .then((res) => {
         if (res.data.errcode === 0) {
           this.list = res.data.list;

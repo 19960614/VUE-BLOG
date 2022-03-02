@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { find,update } from "@/api/setting.js";
+import { find, update } from "@/api/setting.js";
 
 export default {
   data() {
@@ -68,12 +68,11 @@ export default {
       },
       imageUrl: "",
       rules: {
-        //标题验证
         myName: [
-          { required: true, message: "请输入电话", trigger: "blur" },
+          { required: true, message: "请输入昵称", trigger: "blur" },
           {
             min: 1,
-            max: 16,
+            max: 6,
             message: "长度为 1 到 6 个字符",
             trigger: "blur",
           },

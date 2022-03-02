@@ -132,6 +132,7 @@ export default {
   height: 200px;
   object-fit: contain;
   display: block;
+  cursor: pointer;
 }
 
 #BlogArtice-All .clearfix:before,

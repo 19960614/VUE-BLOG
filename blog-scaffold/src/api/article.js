@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-function add(data) {
+function add(data) { //添加文章接口
   let param = new FormData();
   param.append('articleTitle', data.articleTitle);
   param.append('articleImage', data.articleImage);
@@ -10,23 +10,23 @@ function add(data) {
   param.append('articleDay', data.articleDay);
   param.append('articleHour', data.articleHour);
   param.append('articleMinute', data.articleMinute);
-  param.append('articleComment', JSON.stringify(data.articleComment));
+  param.append('articleComment', JSON.stringify(data.articleComment)); //数组要转成字符串
   return axios.post('/api/article/add', param, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
-  }); //添加文章接口 
+  });
 }
 
-function find(data = {}) {
-  return axios.get('/api/article/find', { params: data }); //查询接口 
+function find(data = {}) { //查询接口
+  return axios.get('/api/article/find', { params: data });
 }
 
-function findArticleCount() {
-  return axios.get('/api/article/findArticleCount'); //查询个数接口 
+function findArticleCount() { //查询个数接口
+  return axios.get('/api/article/findArticleCount');
 }
 
-function update(data) {
+function update(data) { //更新文章接口
   let param = new FormData();
   param.append('articleTitle', data.articleTitle);
   param.append('articleImage', data.articleImage);
@@ -36,15 +36,15 @@ function update(data) {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
-  }); //更新文章接口
+  });
 }
 
-function updateComment(data) {
-  return axios.patch('/api/article/updateComment', data); //添加、更新评论接口 
+function updateComment(data) { //添加、更新评论接口 
+  return axios.patch('/api/article/updateComment', data);
 }
 
-function remove(data) {
-  return axios.post('/api/article/remove', data); //添加、更新评论接口 
+function remove(data) { //删除接口
+  return axios.post('/api/article/remove', data);
 }
 
 export {

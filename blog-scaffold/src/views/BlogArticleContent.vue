@@ -1,10 +1,10 @@
 <template>
   <div id="Article">
     <div id="Artivle-content">
-      <h2>{{ articleTitle }}</h2>
       <!-- 标题 -->
+      <h2>{{ articleTitle }}</h2>
+      <!-- 发布时间 -->
       <h3>
-        <!-- 发布时间 -->
         {{ "发布于:" + articleYear + "/" }}{{ articleMonth + "/"
         }}{{ articleDay + "/" }}{{ articleHour + ":" }}{{ articleMinute }}
       </h3>
@@ -14,8 +14,8 @@
     <el-divider></el-divider>
     <!-- 分割线 -->
 
+    <!-- 评论框 -->
     <div class="Artivle-comment">
-      <!-- 评论框 -->
       <el-input
         type="textarea"
         :autosize="{ minRows: 6 }"

@@ -60,19 +60,22 @@ import { register } from "@/api/user.js";
 export default {
   name: "Register",
   data() {
-    var validateUsername = (rule, value, callback) => { //验证用户名
+    var validateUsername = (rule, value, callback) => {
+      //验证是否输入用户名
       if (value === "") {
         callback(new Error("请输入用户名"));
       }
       callback();
     };
-    var validatePass = (rule, value, callback) => { //验证密码
+    var validatePass = (rule, value, callback) => {
+      //验证是否输入密码
       if (value === "") {
         callback(new Error("请输入密码"));
       }
       callback();
     };
-    var validatePass2 = (rule, value, callback) => { //确认密码
+    var validatePass2 = (rule, value, callback) => {
+      //确认密码
       if (value === "") {
         callback(new Error("请再次输入密码"));
       } else if (value !== this.ruleForm.pass) {
@@ -82,6 +85,7 @@ export default {
     };
     return {
       ruleForm: {
+        //提交字段
         username: "",
         pass: "",
         checkPass: "",
@@ -96,19 +100,21 @@ export default {
     };
   },
   methods: {
-    submitForm(formName) { //点击注册触发事件
+    submitForm(formName) {
+      //点击注册触发事件
       this.$refs[formName].validate((valid) => {
-        if (valid) { 
-          register({ //发起ajax
+        if (valid) {
+          register({
+            //发起ajax
             username: this.ruleForm.username,
             password: this.ruleForm.pass,
-          }).then((res) => { 
-            if (res.data.errcode === 0) { //返回0，注册成功
+          }).then((res) => {
+            if (res.data.errcode === 0) {
               this.$message({
                 message: "恭喜您注册成功!",
                 type: "success",
               });
-            } else { //注册失败
+            } else {
               this.$message({
                 message: "注册失败,请重新注册!",
                 type: "error",
@@ -146,7 +152,8 @@ export default {
   height: 300px;
   margin: 100px auto;
 }
-.Register-label .el-form-item__label { /* 改变label前面文字的样式(style不能加scoped) */
+.Register-label .el-form-item__label {
+  /* 改变label前面文字的样式(style不能加scoped) */
   color: #eee;
 }
 .Register-username,

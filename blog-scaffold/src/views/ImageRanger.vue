@@ -68,6 +68,7 @@ export default {
   },
   methods: {
     beforeAvatarUpload(file) {
+      //图片格式验证
       const isJPG = file.type === "image/jpeg";
 
       if (!isJPG) {
@@ -123,7 +124,7 @@ export default {
       remove({ _id: this.list[index]._id }) //根据id删除
         .then((res) => {
           if (res.data.errcode === 0) {
-            find()
+            find() //删除后重新查找所有照片
               .then((res) => {
                 if (res.data.errcode === 0) {
                   this.list = res.data.list;
@@ -169,6 +170,7 @@ export default {
 #ImageRanger-all .el-card {
   width: 178px;
   height: 178px;
+  position: relative;
 }
 #ImageRanger-all .image {
   width: 178px;

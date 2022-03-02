@@ -3,6 +3,7 @@
     <div id="Customer-center">
       <el-container class="Customer-box">
         <el-header>
+          <!-- logo -->
           <div class="Customer-title">VUE-BLOG</div>
           <div class="Customer-nav">
             <div class="line"></div>
@@ -15,6 +16,7 @@
               text-color="#eee"
               active-text-color="#eee"
             >
+              <!-- 导航栏 -->
               <el-menu-item index="/customerHome" class="el-icon-s-home">
                 博客首页</el-menu-item
               >
@@ -33,7 +35,9 @@
             </el-menu>
           </div>
         </el-header>
+
         <el-container>
+          <!-- 侧边栏 -->
           <el-aside width="250px">
             <el-col class="Customer-avatar">
               <div class="demo-basic--circle">
@@ -62,6 +66,7 @@
                 </el-menu-item>
               </el-menu>
             </el-col>
+
             <el-col>
               <el-menu
                 class="el-menu-vertical-demo Customer-contact"
@@ -89,6 +94,8 @@
               </el-menu>
             </el-col>
           </el-aside>
+
+          <!-- 主要内容 -->
           <el-main class="Customer-main"><router-view></router-view></el-main>
         </el-container>
       </el-container>
@@ -112,6 +119,7 @@ export default {
     };
   },
   created() {
+    //设置导航栏默认选中
     if (
       this.$route.fullPath.toLowerCase() === "/customer" ||
       this.$route.fullPath.toLowerCase() === "/customer/"
@@ -130,7 +138,7 @@ export default {
       this.$router
         .push("/login")
         .then(() => {})
-        .catch(() => {}); //编程式路由加then、catch放置报错
+        .catch(() => {}); //编程式路由加then、catch防止报错
     },
   },
   mounted() {
@@ -157,7 +165,7 @@ export default {
       .catch(() => {
         this.photosCount = "error";
       });
-    find()
+    find() //查询博主信息
       .then((res) => {
         if (res.data.errcode === 0) {
           this.list = res.data.list[0];

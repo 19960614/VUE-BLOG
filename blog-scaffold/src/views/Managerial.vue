@@ -3,9 +3,11 @@
     <el-container class="Managerial-box">
       <el-header>
         <div>VUE-BLOG后台管理系统</div>
-        <div>欢迎：{{ username }}</div>
+        <div>欢迎:{{ username }}</div>
       </el-header>
+
       <el-container>
+        <!-- 侧边栏 -->
         <el-aside width="200px">
           <el-menu
             :default-active="activeIndex"
@@ -63,6 +65,7 @@ export default {
     };
   },
   created() {
+    //设置导航栏默认选中
     if (
       this.$route.fullPath.toLowerCase() === "/managerial" ||
       this.$route.fullPath.toLowerCase() === "/managerial/"
@@ -74,12 +77,14 @@ export default {
   },
   computed: {
     username() {
+      //调出vuex存的用户名
       return this.$store.state.username;
     },
   },
   methods: {
     toLogout() {
-      localStorage.removeItem("token");
+      //登出
+      localStorage.removeItem("token"); //删除token
       this.$router.push("/login");
     },
   },

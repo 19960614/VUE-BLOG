@@ -2,20 +2,20 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { info } from '@/api/user.js';
 import store from '@/store/index.js';
-import Login from '@/views/Login.vue';
-import Register from '@/views/Register.vue';
-import Managerial from '@/views/Managerial.vue';
-import ManagerialHome from '@/views/ManagerialHome.vue';
-import Publish from '@/views/Publish.vue';
-import Edit from '@/views/Edit.vue';
-import ImageRanger from '@/views/ImageRanger.vue';
-import Setting from '@/views/Setting.vue';
-import Customer from '@/views/Customer.vue';
-import CustomerHome from '@/views/CustomerHome.vue';
-import BlogArticle from '@/views/BlogArticle.vue';
-import BlogArticleContent from '@/views/BlogArticleContent.vue';
-import MyPhotos from '@/views/MyPhotos.vue';
-import NotFound from '@/views/NotFound.vue';
+import Login from '@/views/Login.vue'; //登录
+import Register from '@/views/Register.vue'; //注册
+import Managerial from '@/views/Managerial.vue'; //管理系统
+import ManagerialHome from '@/views/ManagerialHome.vue'; //管理系统首页
+import Publish from '@/views/Publish.vue'; //管理系统文章发布
+import Edit from '@/views/Edit.vue'; //管理系统编辑文章
+import ImageRanger from '@/views/ImageRanger.vue'; //管理系统相册管理
+import Setting from '@/views/Setting.vue'; //管理系统个人信息设置
+import Customer from '@/views/Customer.vue'; //客户端
+import CustomerHome from '@/views/CustomerHome.vue'; //客户端首页
+import BlogArticle from '@/views/BlogArticle.vue'; //客户端文章页
+import BlogArticleContent from '@/views/BlogArticleContent.vue'; //客户端文章内容
+import MyPhotos from '@/views/MyPhotos.vue'; //客户端我的照片
+import NotFound from '@/views/NotFound.vue'; //404
 
 Vue.use(VueRouter);
 
@@ -35,12 +35,12 @@ const routes = [
     component: Managerial,
     meta: { auth: true },
     children: [
-      { path: '/managerialHome', component: ManagerialHome, meta: { auth: true } }, //首页
-      { path: '/publish', component: Publish, meta: { auth: true } }, //文章发表
-      { path: '/edit', component: Edit, meta: { auth: true } }, //文章编辑
-      { path: '/imageRanger', component: ImageRanger, meta: { auth: true } }, //照片管理
-      { path: '/setting', component: Setting, meta: { auth: true } }, //个人设置
-      { path: '', component: ManagerialHome, meta: { auth: true } }, //默认进入首页
+      { path: '/managerialHome', component: ManagerialHome, meta: { auth: true } },
+      { path: '/publish', component: Publish, meta: { auth: true } },
+      { path: '/edit', component: Edit, meta: { auth: true } },
+      { path: '/imageRanger', component: ImageRanger, meta: { auth: true } },
+      { path: '/setting', component: Setting, meta: { auth: true } },
+      { path: '', component: ManagerialHome, meta: { auth: true } },
     ]
   },
   {
@@ -48,11 +48,11 @@ const routes = [
     component: Customer,
     meta: { auth: true },
     children: [
-      { path: '/customerHome', component: CustomerHome, meta: { auth: true } }, //首页
-      { path: '/blogArticle', component: BlogArticle, meta: { auth: true } }, //文章展示
-      { path: '/blogArticleContent/:id', component: BlogArticleContent, meta: { auth: true } }, //文章内容
-      { path: '/myPhotos', component: MyPhotos, meta: { auth: true } }, //照片
-      { path: '', component: CustomerHome, meta: { auth: true } } //默认进入首页
+      { path: '/customerHome', component: CustomerHome, meta: { auth: true } },
+      { path: '/blogArticle', component: BlogArticle, meta: { auth: true } },
+      { path: '/blogArticleContent/:id', component: BlogArticleContent, meta: { auth: true } },
+      { path: '/myPhotos', component: MyPhotos, meta: { auth: true } },
+      { path: '', component: CustomerHome, meta: { auth: true } }
     ]
   },
   {
@@ -71,7 +71,7 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => { //守卫
   if (to.meta.auth) {  //需要权限的
     info().then((res) => {
       if (res.data.errcode === 0) {  //token是正确的,往下走
@@ -88,7 +88,7 @@ router.beforeEach((to, from, next) => {
           next();
         }
       }
-      else { //不正确进入login
+      else { //token不正确进入login
         next('/login');
       }
     })

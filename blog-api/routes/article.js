@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-let multer = require('multer');
+let multer = require('multer'); 
 let upload = multer({ dest: './public/uploads/' });
 var { add, find, findArticleCount, remove, update, updateComment } = require('../controller/article.js');
 

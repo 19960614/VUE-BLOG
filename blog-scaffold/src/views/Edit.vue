@@ -218,17 +218,13 @@ export default {
         });
     },
     beforeAvatarUpload(file) {
-      //图片格式与大小验证
+      //图片格式验证
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
         this.$message.error("上传头像图片只能是 JPG 格式!");
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+      return isJPG;
     },
     toUpload(res) {
       this.imageUrl = URL.createObjectURL(res.file); //图片预览

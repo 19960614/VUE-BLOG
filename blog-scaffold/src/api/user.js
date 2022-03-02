@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-function register(data){
-  return axios.post('/api/users/register',data); //注册接口 
+function register(data){  //注册接口
+  return axios.post('/api/users/register',data); 
 }
 
-function login(data){
-  return axios.post('/api/users/login',data); //登录接口 
+function login(data){ //登录接口
+  return axios.post('/api/users/login',data);  
 }
 
-function info(){
-  return axios.get('/api/users/info'); //验证token接口 
+function info(){ //验证token接口 
+  return axios.get('/api/users/info'); 
 }
 
 export {
