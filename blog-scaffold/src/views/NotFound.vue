@@ -1,9 +1,15 @@
 <template>
-  <div></div>
+  <div @click="toIAmHansome"></div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    toIAmHansome() {
+      console.log(`29579 22825 40607 22823 24069 27604`);
+    },
+  },
+};
 </script>
 
 <style scoped>

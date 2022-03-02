@@ -8,6 +8,7 @@ var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 var articleRouter = require('./routes/article');
 var photosRouter = require('./routes/photos');
+var settingRouter = require('./routes/setting');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
 app.use('/article', articleRouter);
 app.use('/photos', photosRouter);
+app.use('/setting', settingRouter);
 
 // app.get('*', (req, res, next) => {
 //   res.redirect('/admin/login');

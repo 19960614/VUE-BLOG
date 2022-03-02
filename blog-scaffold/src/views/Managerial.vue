@@ -35,6 +35,10 @@
               <i class="el-icon-user"></i>
               <span slot="title">个人设置</span>
             </el-menu-item>
+            <el-menu-item index="/customer">
+              <i class="el-icon-refresh-left"></i>
+              <span slot="title">去客户端</span>
+            </el-menu-item>
             <el-menu-item @click="toLogout">
               <i class="el-icon-close"></i>
               <span slot="title">退出登录</span>
@@ -59,8 +63,10 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.fullPath.toLowerCase())
-    if (this.$route.fullPath.toLowerCase() === "/managerial/") {
+    if (
+      this.$route.fullPath.toLowerCase() === "/managerial" ||
+      this.$route.fullPath.toLowerCase() === "/managerial/"
+    ) {
       this.activeIndex = "/managerialHome";
     } else {
       this.activeIndex = this.$route.fullPath;

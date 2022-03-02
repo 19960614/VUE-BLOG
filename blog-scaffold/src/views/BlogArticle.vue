@@ -21,20 +21,15 @@
           :offset="1"
         >
           <el-card :body-style="{ padding: '0px' }" class="BlogArtice-card">
-            <img :src="item.articleImage" class="image" />
-            <div style="padding: 14px">
-              <span>{{ item.articleTitle }}</span>
-              <div class="bottom clearfix">
-                <time class="time"></time>
-                <el-button
-                  type="text"
-                  class="button"
-                  @click="toBlogArticleContent(item._id)"
-                  >浏览</el-button
-                >
-              </div>
-            </div>
+            <img
+              :src="item.articleImage"
+              class="image"
+              @click="toBlogArticleContent(item._id)"
+            />
           </el-card>
+          <div style="padding: 14px">
+            <span>{{ item.articleTitle }}</span>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -127,26 +122,15 @@ export default {
 
 <style>
 #BlogArtice-All .BlogArtice-card {
+  width: 200px;
+  height: 200px;
   margin-top: 10px;
-  background: rgba(238, 238, 238, 1);
-}
-#BlogArtice-All .time {
-  font-size: 13px;
-  color: #999;
-}
-
-#BlogArtice-All .bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
-
-#BlogArtice-All .button {
-  padding: 0;
-  float: right;
 }
 
 #BlogArtice-All .image {
-  width: 100%;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
   display: block;
 }
 

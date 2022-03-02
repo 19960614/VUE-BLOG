@@ -37,14 +37,22 @@ let findPhotosCount = (req, res, next) => {
 };
 
 let remove = (req, res, next) => {
+    PhotosModel.find({ "_id": req.body._id }).then((data) => {
+        let filePath = path.resolve(path.join('public', data[0].photosUrl.match(/\/uploads.+$/)[0]));
+        fs.unlink(filePath, function (err) {
+            if (err) {
+                console.log('删除文件失败');
+            }
+            else {
+                console.log('删除文件成功');
+            }
+        })
+    })
     PhotosModel.deleteOne({ "_id": req.body._id }).then(() => {
         res.send({ 'errcode': 0 });
     }).catch(() => {
         res.send({ 'errcode': -1 });
     })
-    // PhotosModel.find({ "_id": id }).then((data) => {
-    //     console.log(1234)
-    // })
 };
 
 module.exports = {

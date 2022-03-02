@@ -71,6 +71,17 @@ let findArticleCount = (req, res, next) => {
 };
 
 let remove = (req, res, next) => {
+    ArticleModel.find({ "_id": req.body._id }).then((data) => {
+        let filePath = path.resolve(path.join('public', data[0].articleImage.match(/\/uploads.+$/)[0]));
+        fs.unlink(filePath, function (err) {
+            if (err) {
+                console.log('删除文件失败');
+            }
+            else {
+                console.log('删除文件成功');
+            }
+        })
+    })
     ArticleModel.deleteOne({ "_id": req.body._id }).then(() => {
         res.send({ 'errcode': 0 });
     }).catch(() => {
@@ -82,6 +93,17 @@ let update = (req, res, next) => {
     let body = req.body;
     let _id = req.body._id;
     if (req.file) {
+        ArticleModel.find({ "_id": req.body._id }).then((data) => {
+            let filePath = path.resolve(path.join('public', data[0].articleImage.match(/\/uploads.+$/)[0]));
+            fs.unlink(filePath, function (err) {
+                if (err) {
+                    console.log('删除文件失败');
+                }
+                else {
+                    console.log('删除文件成功');
+                }
+            })
+        })
         let articleImage = req.file;
         fs.renameSync(path.join('./public/uploads', articleImage.filename), path.join('./public/uploads', articleImage.filename + '.jpg'));
         let data = {

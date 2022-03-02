@@ -122,12 +122,11 @@ export default {
       this.$refs[formName].resetFields();
     },
     beforeAvatarUpload(file) {
-      //图片格式与大小验证
+      //图片格式验证
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传图片只能是 JPG 格式!");
       }
       return isJPG;
     },

@@ -169,7 +169,6 @@ export default {
 #ImageRanger-all .el-card {
   width: 178px;
   height: 178px;
-  position: relative;
 }
 #ImageRanger-all .image {
   width: 178px;
