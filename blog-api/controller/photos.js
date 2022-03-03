@@ -6,7 +6,7 @@ let add = (req, res, next) => { //添加照片
     let photosImage = req.file;
     fs.renameSync(path.join('./public/uploads', photosImage.filename), path.join('./public/uploads', photosImage.filename + '.jpg'));
     let data = {
-        photosUrl: 'http://localhost:3000/uploads/' + photosImage.filename + '.jpg'
+        photosUrl: 'http://192.168.30.203:3000/uploads/' + photosImage.filename + '.jpg'
     };
     PhotosModel.insertMany(data).then((info) => {
         if (info) {

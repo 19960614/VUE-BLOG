@@ -32,43 +32,36 @@
 
       <ul class="Artivle-comment-content">
         <!-- 评论渲染 -->
-        <li v-for="(item, index) in articleComment" :key="index">
+        <li v-for="(item, index) in comment" :key="index">
           <el-button
             type="danger"
             icon="el-icon-delete"
             circle
             class="Artivle-comment-content-delete"
-            v-show="
-              $store.state.username === articleComment[index].username
-                ? true
-                : false
-            "
+            v-show="$store.state.username === item.commentUser ? true : false"
             @click="toDelete(index)"
           ></el-button>
           <div>
             <h4
               class="Artivle-comment-content-username"
               :style="{
-                color:
-                  articleComment[index].username === 'admin123' && '#ffd04b',
+                color: item.commentUser === 'admin123' && '#ffd04b',
               }"
             >
               {{
-                articleComment[index].username === "admin123"
+                item.commentUser === "admin123"
                   ? "博主:"
-                  : articleComment[index].username + ":"
+                  : item.commentUser + ":"
               }}
             </h4>
             <p class="Artivle-comment-content-words">
-              {{ articleComment[index].commentContent }}
+              {{ item.commentContent }}
             </p>
           </div>
           <p class="Artivle-comment-content-time">
-            {{ articleComment[index].commentYear + "/"
-            }}{{ articleComment[index].commentMonth + "/"
-            }}{{ articleComment[index].commentDay + "/"
-            }}{{ articleComment[index].commentHour + ":"
-            }}{{ articleComment[index].commentMinute }}
+            {{ item.commentYear + "/" }}{{ item.commentMonth + "/"
+            }}{{ item.commentDay + "/" }}{{ item.commentHour + ":"
+            }}{{ item.commentMinute }}
           </p>
           <el-divider></el-divider>
         </li>
@@ -78,13 +71,26 @@
 </template>
 
 <script>
-import { find, updateComment } from "@/api/article.js";
+import { find } from "@/api/article.js";
+import { addComment, findComment, removeComment } from "@/api/comment.js";
 
 export default {
   data() {
     return {
-      textarea: "",
-      list: "",
+      textarea: "", //输入框
+      list: "", //渲染文章的数组
+      comment: "", //渲染评论的数组
+      ruleForm: {
+        //提交的字段
+        commentId: this.$route.params.id,
+        commentUser: this.$store.state.username,
+        commentContent: "",
+        commentYear: "",
+        commentMonth: "",
+        commentDay: "",
+        commentHour: "",
+        commentMinute: "",
+      },
     };
   },
   created() {
@@ -92,7 +98,6 @@ export default {
       .then((res) => {
         if (res.data.errcode === 0) {
           this.list = res.data.list[0]; //找到对应的文章
-          this.list.articleComment = JSON.parse(this.list.articleComment); //找到放置评论的数组，用JSON.parse转成对象
         } else {
           this.$message({
             message: "文章加载失败",
@@ -103,6 +108,23 @@ export default {
       .catch(() => {
         this.$message({
           message: "文章加载失败",
+          type: "error",
+        });
+      });
+    findComment({ commentId: this.$route.params.id }) //根据动态路由带过来的信息查询评论信息
+      .then((res) => {
+        if (res.data.errcode === 0) {
+          this.comment = res.data.list; //找到对应的评论
+        } else {
+          this.$message({
+            message: "评论加载失败",
+            type: "error",
+          });
+        }
+      })
+      .catch(() => {
+        this.$message({
+          message: "评论加载失败",
           type: "error",
         });
       });
@@ -126,9 +148,6 @@ export default {
     articleMinute() {
       return this.list.articleMinute;
     },
-    articleComment() {
-      return this.list.articleComment;
-    },
     articleContent() {
       return this.list.articleContent;
     },
@@ -139,49 +158,86 @@ export default {
   methods: {
     toComment() {
       //发送评论
-      let date = new Date();
-      this.list.articleComment.push({
-        //将渲染评论需要的信息整合为对象push到评论数组中
-        commentYear: date.getFullYear(),
-        commentMonth: date.getMonth() + 1,
-        commentDay: date.getDate(),
-        commentHour: date.getHours(),
-        commentMinute: date.getMinutes(),
-        username: this.username,
-        commentContent: this.textarea,
-      });
-      updateComment(this.list) //发起更新的ajax
-        .then((res) => {
-          if (res.data.errcode === 0) {
+      if (this.textarea === "") {
+        this.$message({
+          message: "评论内容不能为空",
+          type: "warning",
+        });
+      } else {
+        let date = new Date();
+        this.ruleForm.commentContent = this.textarea;
+        this.ruleForm.commentYear = date.getFullYear();
+        this.ruleForm.commentMonth = date.getMonth() + 1;
+        this.ruleForm.commentDay = date.getDate();
+        this.ruleForm.commentHour = date.getHours();
+        this.ruleForm.commentMinute = date.getMinutes();
+        addComment(this.ruleForm)
+          .then((res) => {
+            //发起添加评论ajax
+            if (res.data.errcode === 0) {
+              this.$message({
+                message: "评论成功!",
+                type: "success",
+              });
+              findComment({ commentId: this.$route.params.id }) //根据动态路由带过来的信息查询评论信息
+                .then((res) => {
+                  if (res.data.errcode === 0) {
+                    this.comment = res.data.list; //找到对应的评论
+                  } else {
+                    this.$message({
+                      message: "评论加载失败",
+                      type: "error",
+                    });
+                  }
+                })
+                .catch(() => {
+                  this.$message({
+                    message: "评论加载失败",
+                    type: "error",
+                  });
+                });
+            } else {
+              this.$message({
+                message: "评论失败",
+                type: "error",
+              });
+            }
+          })
+          .catch(() => {
             this.$message({
-              message: "评论成功",
-              type: "success",
-            });
-          } else {
-            this.$message({
-              message: "发表评论失败",
+              message: "评论失败",
               type: "error",
             });
-          }
-        })
-        .catch(() => {
-          this.$message({
-            message: "发表评论失败",
-            type: "error",
           });
-        });
-      this.textarea = ""; //清空输入框
+        this.textarea = ""; //清空输入框
+      }
     },
     toDelete(index) {
       //删除评论（只能删除用户自己发送的评论 v-show）
-      this.list.articleComment.splice(index, 1); //利用index将评论数组中对应的第几个数据剪切掉
-      updateComment(this.list) //发起更新的ajax
+      removeComment({ _id: this.comment[index]._id }) //发起删除的ajax
         .then((res) => {
           if (res.data.errcode === 0) {
             this.$message({
               message: "删除成功",
               type: "success",
             });
+            findComment({ commentId: this.$route.params.id }) //根据动态路由带过来的信息查询评论信息
+              .then((res) => {
+                if (res.data.errcode === 0) {
+                  this.comment = res.data.list; //找到对应的评论
+                } else {
+                  this.$message({
+                    message: "评论加载失败",
+                    type: "error",
+                  });
+                }
+              })
+              .catch(() => {
+                this.$message({
+                  message: "评论加载失败",
+                  type: "error",
+                });
+              });
           } else {
             this.$message({
               message: "删除评论失败",

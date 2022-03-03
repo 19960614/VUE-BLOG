@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { find, update, remove } from "@/api/article.js";
+import { find, update, remove, removeComment } from "@/api/article.js";
 
 export default {
   data() {
@@ -163,7 +163,24 @@ export default {
         center: true,
       })
         .then(() => {
-          //点击确认触发删除的ajax
+          removeComment({ _id: this.list[index]._id }) //根据id删除评论
+            .then((res) => {
+              if (res.data.errcode === 0) {
+                console.log("删除评论成功");
+              } else {
+                this.$message({
+                  type: "success",
+                  message: "删除评论失败!",
+                });
+              }
+            })
+            .catch(() => {
+              this.$message({
+                message: "删除评论失败",
+                type: "error",
+              });
+            });
+          //点击确认触发删除的ajax;
           remove({ _id: this.list[index]._id }) //根据id删除
             .then((res) => {
               if (res.data.errcode === 0) {

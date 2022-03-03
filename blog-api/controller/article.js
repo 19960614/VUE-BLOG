@@ -1,6 +1,7 @@
 let fs = require('fs');
 let path = require('path');
 let ArticleModel = require('../model/article.js');
+let CommentModel = require('../model/comment.js');
 let ObjectId = require('mongodb').ObjectId; //与数据库默认的_id进行匹配
 
 let add = (req, res, next) => {
@@ -10,7 +11,7 @@ let add = (req, res, next) => {
         fs.renameSync(path.join('./public/uploads', articleImage.filename), path.join('./public/uploads', articleImage.filename + '.jpg'));
         let data = {
             ...body,
-            articleImage: 'http://localhost:3000/uploads/' + articleImage.filename + '.jpg'
+            articleImage: 'http://192.168.30.203:3000/uploads/' + articleImage.filename + '.jpg'
         };
         ArticleModel.insertMany(data).then((info) => {
             if (info) {
@@ -89,6 +90,14 @@ let remove = (req, res, next) => { //删除
     })
 };
 
+let removeComment = (req, res, next) => { //删除所有评论
+    CommentModel.deleteMany({ "commentId": req.body._id }).then(() => {
+        res.send({ 'errcode': 0 });
+    }).catch(() => {
+        res.send({ 'errcode': -1 });
+    })
+};
+
 let update = (req, res, next) => { //更新
     let body = req.body;
     let _id = req.body._id;
@@ -108,7 +117,7 @@ let update = (req, res, next) => { //更新
         fs.renameSync(path.join('./public/uploads', articleImage.filename), path.join('./public/uploads', articleImage.filename + '.jpg')); //删除uploads下的旧图片
         let data = {
             ...body,
-            articleImage: 'http://localhost:3000/uploads/' + articleImage.filename + '.jpg'
+            articleImage: 'http://192.168.30.203:3000/uploads/' + articleImage.filename + '.jpg'
         };
         ArticleModel.updateOne({ _id }, { $set: { "articleTitle": data.articleTitle, "articleImage": data.articleImage, "articleContent": data.articleContent } }).then(() => {
             res.send({ 'errcode': 0 });
@@ -125,20 +134,11 @@ let update = (req, res, next) => { //更新
     }
 };
 
-let updateComment = (req, res, next) => { //更新评论内容
-    let _id = req.body._id;
-    ArticleModel.updateOne({ _id }, { $set: { articleComment: JSON.stringify(req.body.articleComment) } }).then(() => {
-        res.send({ 'errcode': 0 });
-    }).catch(() => {
-        res.send({ 'errcode': -1 });
-    })
-};
-
 module.exports = {
     add,
     find,
     findArticleCount,
     remove,
-    update,
-    updateComment
+    removeComment,
+    update
 };

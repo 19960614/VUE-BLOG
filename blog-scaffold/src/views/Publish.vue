@@ -61,7 +61,6 @@ export default {
         articleDay: "",
         articleHour: "",
         articleMinute: "",
-        articleComment: [],
       },
       imageUrl: "",
       content: "",

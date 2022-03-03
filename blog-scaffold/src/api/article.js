@@ -10,7 +10,6 @@ function add(data) { //添加文章接口
   param.append('articleDay', data.articleDay);
   param.append('articleHour', data.articleHour);
   param.append('articleMinute', data.articleMinute);
-  param.append('articleComment', JSON.stringify(data.articleComment)); //数组要转成字符串
   return axios.post('/api/article/add', param, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -39,12 +38,12 @@ function update(data) { //更新文章接口
   });
 }
 
-function updateComment(data) { //添加、更新评论接口 
-  return axios.patch('/api/article/updateComment', data);
-}
-
 function remove(data) { //删除接口
   return axios.post('/api/article/remove', data);
+}
+
+function removeComment(data) { //删除评论接口
+  return axios.post('/api/article/removeComment', data);
 }
 
 export {
@@ -52,6 +51,6 @@ export {
   find,
   findArticleCount,
   update,
-  updateComment,
-  remove
+  remove,
+  removeComment
 }

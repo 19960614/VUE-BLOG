@@ -9,7 +9,6 @@ let articleSchema = mongoose.Schema({
     articleDay: { type: String }, //发布日
     articleHour: { type: String }, //发布时
     articleMinute: { type: String }, //发布分
-    articleComment: { type: String } //评论
 })
 let articleModel = mongoose.model('article', articleSchema);
 

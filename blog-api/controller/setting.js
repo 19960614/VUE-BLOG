@@ -28,7 +28,7 @@ let update = (req, res, next) => { //更新个人信息
         fs.renameSync(path.join('./public/uploads', myHead.filename), path.join('./public/uploads', myHead.filename + '.jpg'));
         let data = {
             ...body,
-            myHead: 'http://localhost:3000/uploads/' + myHead.filename + '.jpg'
+            myHead: 'http://192.168.30.203:3000/uploads/' + myHead.filename + '.jpg'
         };
         SettingModel.updateOne({}, { $set: { "myName": data.myName, "myHead": data.myHead, "myTel": data.myTel, "myQQ": data.myQQ, "myMail": data.myMail } }).then(() => {
             res.send({ 'errcode': 0 });
