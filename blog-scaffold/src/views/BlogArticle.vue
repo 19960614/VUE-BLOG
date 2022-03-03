@@ -16,7 +16,7 @@
       <el-row>
         <el-col
           :span="7"
-          v-for="(item, index) in this.list"
+          v-for="(item, index) in listPage"
           :key="index"
           :offset="1"
         >
@@ -32,6 +32,16 @@
           </div>
         </el-col>
       </el-row>
+      <!-- 分页 -->
+      <el-pagination
+        background
+        page-size="6"
+        layout="prev, pager, next"
+        @current-change="current_change"
+        :total="list.length"
+        class="page"
+      >
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -44,9 +54,18 @@ export default {
     return {
       list: "",
       search: "",
+      current: 1, //当前页数
     };
   },
+  computed: {
+    listPage() {
+      return this.list.slice(6 * (this.current - 1), 6 * this.current); //将全部文章slice成每页需要渲染的文章的数组
+    },
+  },
   methods: {
+    current_change(current) {
+      this.current = Number(current); //currentPage改变时改变当前页数
+    },
     toBlogArticleContent(index) {
       //点击去往BlogArticleContent页面,将_id作为动态路由后面的信息带过去
       this.$router
@@ -122,14 +141,14 @@ export default {
 
 <style>
 #BlogArtice-All .BlogArtice-card {
-  width: 200px;
-  height: 200px;
+  width: 175px;
+  height: 175px;
   margin-top: 10px;
 }
 
 #BlogArtice-All .image {
-  width: 200px;
-  height: 200px;
+  width: 175px;
+  height: 175px;
   object-fit: contain;
   display: block;
   cursor: pointer;
@@ -143,5 +162,8 @@ export default {
 
 #BlogArtice-All .clearfix:after {
   clear: both;
+}
+#BlogArtice-All .page {
+  text-align: right;
 }
 </style>

@@ -7,7 +7,11 @@ import store from './store';
 import axios from 'axios';
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
+import VideoPlayer from 'vue-video-player';
+import 'vue-video-player/src/custom-theme.css';
+import 'video.js/dist/video-js.css';
 
+Vue.use(VideoPlayer);
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
 
