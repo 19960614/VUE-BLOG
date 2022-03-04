@@ -1,21 +1,26 @@
 <template>
   <div class="demo CustomerHome-all">
-    <el-select v-model="value" placeholder="请选择">
-    <el-option
-    @click.native="toSelect"
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
-    <video-player
-      class="video-player vjs-custom-skin"
-      ref="videoPlayer"
-      :playsinline="true"
-      :options="playerOptions"
-    >
-    </video-player>
+    <div class="select">
+      <el-select v-model="value" placeholder="webpack基本操作">
+        <el-option
+          @click.native="toSelect"
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+    </div>
+    <div class="video">
+      <video-player
+        class="video-player vjs-custom-skin"
+        ref="videoPlayer"
+        :playsinline="true"
+        :options="playerOptions"
+      >
+      </video-player>
+    </div>
   </div>
 </template>
 
@@ -24,14 +29,15 @@ export default {
   name: "CustomerHome",
   data() {
     return {
-       options: [{
-          value: '1_Vue3和Vue3对比',
-          label: '1_Vue3和Vue3对比'
-        }, {
-          value: '2_Vue3组合式API',
-          label: '2_Vue3组合式API'
-        }],
-        value: '',
+      options: [
+        { value: "webpack基本操作", label: "webpack基本操作" },
+        { value: "webpack插件和服务器", label: "webpack插件和服务器" },
+        { value: "webpack_loader", label: "webpack_loader" },
+        { value: "webpack支持vue文件", label: "webpack支持vue文件" },
+        { value: "Vue3和Vue3对比", label: "Vue3和Vue3对比" },
+        { value: "Vue3组合式API", label: "Vue3组合式API" },
+      ],
+      value: "",
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
         autoplay: false, // 如果为true,浏览器准备好时开始回放。
@@ -44,7 +50,7 @@ export default {
         sources: [
           {
             type: "video/mp4", // 类型
-            src: "/video/1_Vue3和Vue3对比.mp4", // url地址
+            src: "/video/webpack基本操作.mp4", // url地址
           },
         ],
         poster: "", // 封面地址
@@ -59,12 +65,16 @@ export default {
     };
   },
   methods: {
-    toSelect(){
-      this.playerOptions.src = `/video/${this.value}.mp4`;
-    }
-  }
+    toSelect() {
+      this.playerOptions.sources[0].src = `/video/${this.value}.mp4`;
+      console.log(this.playerOptions.sources.src);
+    },
+  },
 };
 </script>
 
 <style>
+.select{
+  padding-bottom: 20px;
+}
 </style>

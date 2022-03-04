@@ -245,6 +245,7 @@ export default {
   color: #eee;
 }
 .Customer-main {
+  position: relative;
   height: 90vh;
   overflow: auto; /* main区域溢出加滚动条 */
 }

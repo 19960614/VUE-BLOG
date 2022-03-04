@@ -165,5 +165,8 @@ export default {
 }
 #BlogArtice-All .page {
   text-align: right;
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
 }
 </style>
